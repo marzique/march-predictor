@@ -1,8 +1,50 @@
 """Fetch games from the World Cup API, upsert into SQLite, recompute points."""
-from datetime import datetime
+import json
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 import httpx
+
+_QUOTES = '"“”„‟'
+
+
+def parse_scorers(raw) -> str:
+    """Turn the API's messy scorers string into a JSON list.
+
+    Examples seen:
+      '"{“J. Quiñones 9\'”,”R. Jiménez 67\'”}"'  -> ["J. Quiñones 9'", "R. Jiménez 67'"]
+      '{"L. Krejčí 59\'"}'                        -> ["L. Krejčí 59'"]
+      'null' / '' / None                          -> []
+    Returns a JSON string (so it can go straight into a TEXT column).
+    """
+    if not raw:
+        return "[]"
+    s = str(raw).strip()
+    if s.lower() in ("null", "none", ""):
+        return "[]"
+    # strip an outer wrapping quote, then the {...} braces
+    s = s.strip()
+    while s and s[0] in _QUOTES:
+        s = s[1:]
+    while s and s[-1] in _QUOTES:
+        s = s[:-1]
+    s = s.strip()
+    if s.startswith("{"):
+        s = s[1:]
+    if s.endswith("}"):
+        s = s[:-1]
+    names = []
+    for tok in s.split(","):
+        tok = tok.strip()
+        while tok and tok[0] in _QUOTES:
+            tok = tok[1:]
+        while tok and tok[-1] in _QUOTES:
+            tok = tok[:-1]
+        tok = tok.strip()
+        if tok:
+            names.append(tok)
+    return json.dumps(names, ensure_ascii=False)
 
 from db import connect
 
@@ -11,12 +53,40 @@ TEAMS_URL = "https://worldcup26.ir/get/teams"
 FLAGS_DIR = Path(__file__).parent / "static" / "flags"
 
 
-def _parse_kickoff(local_date: str) -> str | None:
-    # API format: "06/11/2026 13:00"
+# local_date is the host-stadium's local time. WC2026 venues span 5 timezones.
+# Map stadium id -> IANA tz (zoneinfo applies the correct DST for the match date).
+STADIUM_TZ = {
+    "1": "America/Mexico_City",   # Mexico City
+    "2": "America/Mexico_City",   # Guadalajara
+    "3": "America/Monterrey",     # Monterrey
+    "4": "America/Chicago",       # Dallas
+    "5": "America/Chicago",       # Houston
+    "6": "America/Chicago",       # Kansas City
+    "7": "America/New_York",      # Atlanta
+    "8": "America/New_York",      # Miami
+    "9": "America/New_York",      # Boston
+    "10": "America/New_York",     # Philadelphia
+    "11": "America/New_York",     # New York/New Jersey
+    "12": "America/Toronto",      # Toronto
+    "13": "America/Vancouver",    # Vancouver
+    "14": "America/Los_Angeles",  # Seattle
+    "15": "America/Los_Angeles",  # San Francisco Bay Area
+    "16": "America/Los_Angeles",  # Los Angeles
+}
+DEFAULT_TZ = "America/New_York"   # fallback for an unknown stadium id
+
+
+def _parse_kickoff(local_date: str, stadium_id=None) -> str | None:
+    # API format "06/12/2026 15:00" in the stadium's local time -> stored as UTC ISO.
     try:
-        return datetime.strptime(local_date.strip(), "%m/%d/%Y %H:%M").isoformat()
+        dt = datetime.strptime(local_date.strip(), "%m/%d/%Y %H:%M")
     except (ValueError, AttributeError):
         return None
+    try:
+        tz = ZoneInfo(STADIUM_TZ.get(str(stadium_id), DEFAULT_TZ))
+    except Exception:
+        tz = timezone(timedelta(hours=-4))   # ET summer offset, last resort
+    return dt.replace(tzinfo=tz).astimezone(timezone.utc).isoformat()
 
 
 def _to_int(v):
@@ -81,34 +151,40 @@ async def sync_games() -> dict:
     with connect() as conn:
         for g in games:
             mid = g.get("_id")
-            kickoff = _parse_kickoff(g.get("local_date", ""))
+            kickoff = _parse_kickoff(g.get("local_date", ""), g.get("stadium_id"))
             if not mid or not kickoff:
                 continue
             finished = 1 if str(g.get("finished", "")).upper() == "TRUE" else 0
             hs = _to_int(g.get("home_score")) if finished else None
             as_ = _to_int(g.get("away_score")) if finished else None
+            home_sc = parse_scorers(g.get("home_scorers"))
+            away_sc = parse_scorers(g.get("away_scorers"))
 
             row = conn.execute("SELECT id FROM matches WHERE id=?", (mid,)).fetchone()
             if row is None:
                 conn.execute(
                     """INSERT INTO matches
                        (id, home, away, home_id, away_id, kickoff,
-                        home_score, away_score, finished, grp, matchday)
-                       VALUES (?,?,?,?,?,?,?,?,?,?,?)""",
+                        home_score, away_score, finished, grp, matchday,
+                        home_scorers, away_scorers)
+                       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)""",
                     (mid, g.get("home_team_name_en", "?"), g.get("away_team_name_en", "?"),
                      g.get("home_team_id"), g.get("away_team_id"),
-                     kickoff, hs, as_, finished, g.get("group"), g.get("matchday")),
+                     kickoff, hs, as_, finished, g.get("group"), g.get("matchday"),
+                     home_sc, away_sc),
                 )
                 new += 1
             else:
                 conn.execute(
                     """UPDATE matches
                        SET home=?, away=?, home_id=?, away_id=?, kickoff=?,
-                           home_score=?, away_score=?, finished=?, grp=?, matchday=?
+                           home_score=?, away_score=?, finished=?, grp=?, matchday=?,
+                           home_scorers=?, away_scorers=?
                        WHERE id=?""",
                     (g.get("home_team_name_en", "?"), g.get("away_team_name_en", "?"),
                      g.get("home_team_id"), g.get("away_team_id"),
-                     kickoff, hs, as_, finished, g.get("group"), g.get("matchday"), mid),
+                     kickoff, hs, as_, finished, g.get("group"), g.get("matchday"),
+                     home_sc, away_sc, mid),
                 )
                 updated += 1
             if finished and hs is not None and as_ is not None:

@@ -41,19 +41,20 @@
   <p class="hint">No matches yet. Hit ↻ Refresh.</p>
 {% endif %}
 
+<form id="bulk" method="post" action="/predict-bulk">
 {% for it in items %}
 {% set m = it.m %}{% set p = it.pred %}
 {% set needs = not it.locked and not p %}
-<div class="card match {{ 'locked' if it.locked else '' }} {{ 'needs-pred' if needs else '' }}">
+<div class="card match {{ 'locked' if it.locked else 'open' }} {{ 'needs-pred' if needs else '' }}">
   <div class="meta">
-    <span>{{ m["kickoff"].replace("T", " ")[:16] }}</span>
+    <time class="localtime" datetime="{{ m['kickoff'] }}">{{ m["kickoff"].replace("T", " ")[:16] }} UTC</time>
     {% if m["grp"] %}<span class="grp">Group {{ m["grp"] }}</span>{% endif %}
     {% if m["finished"] %}<span class="final">FINAL</span>{% endif %}
-    {% if needs %}<span class="todo">Predict this!</span>{% endif %}
+    {% if needs %}<span class="todo">Predict this!</span>
+    {% elif not it.locked %}<span class="editable">✏️ Open · editable</span>{% endif %}
   </div>
 
-  <form method="post" action="/predict/{{ m['id'] }}" class="match-form">
-    <div class="fixture">
+  <div class="fixture">
       <div class="side">
         {% if it.home_flag %}<img class="flag" src="{{ it.home_flag }}" alt="">{% endif %}
         <span class="name">{{ m["home"] }}</span>
@@ -72,13 +73,13 @@
             <span class="scorebox static">{{ p["pred_away"] if p else "–" }}</span>
           {% endif %}
         {% else %}
-          <input class="scorebox" type="number" name="pred_home" min="0"
+          <input class="scorebox" type="number" name="h_{{ m['id'] }}" min="0"
                  inputmode="numeric" value="{{ p['pred_home'] if p else '' }}"
-                 placeholder="0" required>
+                 placeholder="0" form="bulk">
           <span class="colon">:</span>
-          <input class="scorebox" type="number" name="pred_away" min="0"
+          <input class="scorebox" type="number" name="a_{{ m['id'] }}" min="0"
                  inputmode="numeric" value="{{ p['pred_away'] if p else '' }}"
-                 placeholder="0" required>
+                 placeholder="0" form="bulk">
         {% endif %}
       </div>
 
@@ -88,12 +89,16 @@
       </div>
     </div>
 
-    {% if not it.locked %}
-      <button type="submit" class="predict-btn {{ 'new' if not p else '' }}">
-        {{ 'Update prediction' if p else 'Predict' }}
-      </button>
-    {% endif %}
-  </form>
+  {% if m["finished"] and (it.home_scorers or it.away_scorers) %}
+    <div class="scorers">
+      <div class="sc-side">
+        {% for s in it.home_scorers %}<div class="sc">⚽ {{ s }}</div>{% endfor %}
+      </div>
+      <div class="sc-side away">
+        {% for s in it.away_scorers %}<div class="sc">{{ s }} ⚽</div>{% endfor %}
+      </div>
+    </div>
+  {% endif %}
 
   {% if m["finished"] and p %}
     {% set pts = p["points"] %}
@@ -126,6 +131,14 @@
   {% endif %}
 </div>
 {% endfor %}
+</form>
+
+{% if items %}
+<div class="savebar">
+  <button type="submit" form="bulk" class="predict-btn new">💾 Save all predictions</button>
+  <span class="savehint">Fill both boxes of a match to save it.</span>
+</div>
+{% endif %}
 </div>
 </div>
 {% endblock %}

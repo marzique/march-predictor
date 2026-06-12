@@ -75,9 +75,15 @@ def restore_from_json(path: Path | str = None) -> dict:
             cols = list(rows[0].keys())
             placeholders = ",".join("?" * len(cols))
             collist = ",".join(cols)
+
+            def clean(col, val):           # trim stray whitespace from id keys
+                if col in ("match_id", "id") and isinstance(val, str):
+                    return val.strip()
+                return val
+
             conn.executemany(
                 f"INSERT OR REPLACE INTO {t} ({collist}) VALUES ({placeholders})",
-                [tuple(r[c] for c in cols) for r in rows],
+                [tuple(clean(c, r[c]) for c in cols) for r in rows],
             )
             counts[t] = len(rows)
     return counts

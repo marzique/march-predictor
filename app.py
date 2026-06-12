@@ -1,7 +1,8 @@
 """Match prediction MVP — FastAPI + SQLite + Jinja2."""
 import asyncio
+import json
 from contextlib import asynccontextmanager
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 import bcrypt
@@ -74,6 +75,16 @@ def check_pw(pw: str, h: str) -> bool:
     return bcrypt.checkpw(pw.encode(), h.encode())
 
 
+def _scorers(raw):
+    """Parse the JSON scorers column into a list (empty on null/bad data)."""
+    if not raw:
+        return []
+    try:
+        return json.loads(raw)
+    except (ValueError, TypeError):
+        return []
+
+
 def fetch_leaderboard(conn):
     return conn.execute(
         """SELECT u.username,
@@ -92,7 +103,7 @@ async def home(request: Request):
     if not user:
         return RedirectResponse("/login", status_code=302)
 
-    now = datetime.now().isoformat()
+    now = datetime.now(timezone.utc).isoformat()
     with connect() as conn:
         matches = conn.execute("SELECT * FROM matches ORDER BY kickoff").fetchall()
         rows = conn.execute(
@@ -108,7 +119,9 @@ async def home(request: Request):
         locked = m["kickoff"] <= now or m["finished"]
         items.append({"m": m, "pred": preds.get(m["id"]), "locked": bool(locked),
                       "home_flag": flags.get(m["home_id"]),
-                      "away_flag": flags.get(m["away_id"])})
+                      "away_flag": flags.get(m["away_id"]),
+                      "home_scorers": _scorers(m["home_scorers"]),
+                      "away_scorers": _scorers(m["away_scorers"])})
     return render(request, "matches.html",
                   {"user": user, "items": items, "board": board})
 
@@ -122,7 +135,7 @@ async def predict(request: Request, match_id: str,
     if pred_home < 0 or pred_away < 0:
         return RedirectResponse("/", status_code=302)
 
-    now = datetime.now().isoformat()
+    now = datetime.now(timezone.utc).isoformat()
     with connect() as conn:
         m = conn.execute("SELECT kickoff, finished FROM matches WHERE id=?",
                          (match_id,)).fetchone()
@@ -134,6 +147,43 @@ async def predict(request: Request, match_id: str,
                    DO UPDATE SET pred_home=excluded.pred_home,
                                  pred_away=excluded.pred_away""",
                 (user["id"], match_id, pred_home, pred_away))
+    return RedirectResponse("/", status_code=302)
+
+
+@app.post("/predict-bulk")
+async def predict_bulk(request: Request):
+    """Save every filled-in prediction on the page in one shot."""
+    user = current_user(request)
+    if not user:
+        return RedirectResponse("/login", status_code=302)
+    form = await request.form()
+    now = datetime.now(timezone.utc).isoformat()
+    with connect() as conn:
+        matches = {m["id"]: m for m in
+                   conn.execute("SELECT id, kickoff, finished FROM matches").fetchall()}
+        for key in form:
+            if not key.startswith("h_"):
+                continue
+            mid = key[2:]
+            h = (form.get(f"h_{mid}") or "").strip()
+            a = (form.get(f"a_{mid}") or "").strip()
+            if h == "" or a == "":          # skip matches left blank
+                continue
+            try:
+                hi, ai = int(h), int(a)
+            except ValueError:
+                continue
+            if hi < 0 or ai < 0:
+                continue
+            m = matches.get(mid)
+            if m and m["kickoff"] > now and not m["finished"]:   # future only
+                conn.execute(
+                    """INSERT INTO predictions (user_id, match_id, pred_home, pred_away)
+                       VALUES (?,?,?,?)
+                       ON CONFLICT(user_id, match_id)
+                       DO UPDATE SET pred_home=excluded.pred_home,
+                                     pred_away=excluded.pred_away""",
+                    (user["id"], mid, hi, ai))
     return RedirectResponse("/", status_code=302)
 
 

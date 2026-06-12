@@ -21,5 +21,16 @@
   <main class="{% block main_class %}{% endblock %}">
     {% block content %}{% endblock %}
   </main>
+  <script>
+    // Show each match time in the visitor's own timezone.
+    document.querySelectorAll("time.localtime").forEach(function (el) {
+      var d = new Date(el.getAttribute("datetime"));
+      if (isNaN(d)) return;
+      el.textContent = d.toLocaleString([], {
+        weekday: "short", month: "short", day: "numeric",
+        hour: "2-digit", minute: "2-digit"
+      });
+    });
+  </script>
 </body>
 </html>

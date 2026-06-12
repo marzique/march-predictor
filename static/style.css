@@ -90,10 +90,46 @@ h1 { font-size: 22px; margin: 8px 0 16px; }
   box-shadow: 0 2px 8px rgba(0,0,0,0.25);
 }
 
+/* goal scorers (finished matches) */
+.scorers {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+  margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--line);
+  font-size: 13px; color: var(--muted);
+}
+.sc-side .sc { padding: 1px 0; }
+.sc-side.away { text-align: right; }
+
 .predict-btn { width: 100%; margin-top: 16px; padding: 13px; font-size: 15px; }
 .predict-btn.new { background: var(--good); color: #07210b; }
 
-/* a match the user hasn't predicted yet — make it pop */
+/* always-visible bulk-save bar (fixed to viewport) */
+.savebar {
+  position: fixed; left: 50%; transform: translateX(-50%);
+  bottom: 16px; z-index: 20;
+  width: min(620px, calc(100% - 28px));
+  padding: 12px 14px;
+  display: flex; align-items: center; gap: 14px;
+  background: rgba(15,17,21,0.92); backdrop-filter: blur(8px);
+  border: 1px solid var(--line); border-radius: 14px;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.5);
+}
+.savebar .predict-btn { margin-top: 0; flex: 1; }
+.savehint { color: var(--muted); font-size: 12px; max-width: 140px; line-height: 1.3; }
+/* keep last match clear of the fixed bar */
+.matches-col { padding-bottom: 92px; }
+
+/* a still-open match (future, prediction editable) */
+.match.open {
+  border-color: rgba(61,169,252,0.45);
+  box-shadow: 0 0 0 1px rgba(61,169,252,0.25);
+}
+.editable {
+  background: rgba(61,169,252,0.16); color: var(--accent);
+  border: 1px solid rgba(61,169,252,0.4); border-radius: 6px;
+  padding: 2px 8px; font-weight: 600; font-size: 12px;
+}
+
+/* a match the user hasn't predicted yet — make it pop (overrides .open) */
 .match.needs-pred {
   border-color: var(--good);
   box-shadow: 0 0 0 1px var(--good), 0 0 18px rgba(76,175,80,0.18);

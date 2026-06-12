@@ -23,7 +23,9 @@ CREATE TABLE IF NOT EXISTS matches (
     away_score INTEGER,
     finished   INTEGER NOT NULL DEFAULT 0,
     grp        TEXT,
-    matchday   TEXT
+    matchday   TEXT,
+    home_scorers TEXT,                     -- JSON list of "Name 67'"
+    away_scorers TEXT
 );
 CREATE TABLE IF NOT EXISTS teams (
     id        TEXT PRIMARY KEY,           -- team id (matches games' home_team_id)
@@ -54,6 +56,15 @@ def connect():
 def init_db():
     with connect() as conn:
         conn.executescript(SCHEMA)
+        _migrate(conn)
+
+
+def _migrate(conn):
+    """Add columns to an existing DB created before they existed."""
+    cols = {r["name"] for r in conn.execute("PRAGMA table_info(matches)")}
+    for col in ("home_scorers", "away_scorers"):
+        if col not in cols:
+            conn.execute(f"ALTER TABLE matches ADD COLUMN {col} TEXT")
 
 
 # ---------------------------------------------------------------- scoring ----
