@@ -155,6 +155,9 @@ h1 {
   padding: 16px;
 }
 
+/* leave room under the sticky header when auto-scrolling to the next match */
+#focus-match { scroll-margin-top: 72px; }
+
 .match .meta {
   display: flex;
   gap: 10px;
@@ -258,6 +261,50 @@ h1 {
   justify-content: center;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
 }
+
+/* "X/N predicted" progress (open matches) */
+.predprog {
+  display: flex; align-items: center; gap: 10px;
+  margin: 0 0 14px;
+}
+.predprog-bar {
+  flex: 1; height: 6px; border-radius: 999px;
+  background: var(--line); overflow: hidden;
+}
+.predprog-fill {
+  height: 100%; border-radius: 999px;
+  background: var(--accent); transition: width .3s;
+}
+.predprog-txt { font-size: 12px; color: var(--muted); white-space: nowrap; }
+.predprog-txt.picks-tip { cursor: help; border: none; padding: 0; color: var(--muted); }
+.predprog-txt.picks-tip:hover { color: var(--fg); }
+.predprog-txt .tip { left: auto; right: 0; min-width: 150px; }
+.who-line { display: block; font-size: 13px; color: var(--fg); padding: 1px 0; }
+.who-line.muted { color: var(--muted); }
+.who-line.me { color: var(--accent); font-weight: 700; }
+.tip .tip-title:not(:first-child) { margin-top: 8px; }
+
+/* progression chart */
+.chart-wrap { position: relative; height: 460px; width: 100%; }
+
+/* per-match comments */
+.comments { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--line); }
+.cmt-toggle {
+  background: none; border: none; color: var(--muted); cursor: pointer;
+  font-size: 13px; padding: 2px 0; font-weight: 600;
+}
+.cmt-toggle:hover { color: var(--fg); }
+.cmt-count { color: var(--accent); }
+.cmt-panel { margin-top: 8px; }
+.cmt-list { max-height: 240px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
+.cmt { background: #11141a; border: 1px solid var(--line); border-radius: 8px; padding: 6px 10px; }
+.cmt-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.cmt-who { font-weight: 700; font-size: 13px; color: var(--accent); }
+.cmt-when { font-size: 11px; color: var(--muted); }
+.cmt-body { font-size: 14px; margin-top: 2px; word-break: break-word; }
+.cmt-form { display: flex; gap: 8px; margin-top: 8px; }
+.cmt-input { flex: 1; }
+.cmt-form button { padding: 8px 14px; }
 
 /* live lock countdown chip */
 .countdown {

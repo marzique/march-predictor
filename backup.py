@@ -16,7 +16,7 @@ from pathlib import Path
 from db import connect, init_db
 
 BACKUP_DIR = Path(__file__).parent / "backups"
-TABLES = ["users", "teams", "matches", "predictions"]
+TABLES = ["users", "teams", "matches", "predictions", "comments"]
 MAX_SNAPSHOTS = 50
 
 

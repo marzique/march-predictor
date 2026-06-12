@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Progress{% endblock %}
+{% block content %}
+<h1>📈 Points progression</h1>
+
+{% if not has_data %}
+  <p class="hint">No finished matches yet — the chart fills in as results come in.</p>
+{% else %}
+<div class="card">
+  <div class="chart-wrap"><canvas id="progressChart"></canvas></div>
+</div>
+{% endif %}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+  var CHART = {{ chart | tojson }};
+  (function () {
+    var el = document.getElementById("progressChart");
+    if (!el || !window.Chart) return;
+    var ds = CHART.datasets.map(function (d, i) {
+      var hue = (i * 137.5) % 360;            // golden-angle spread = distinct colors
+      var color = "hsl(" + hue + ",70%,58%)";
+      return {
+        label: d.label, data: d.data,
+        borderColor: color, backgroundColor: color,
+        tension: 0.25, borderWidth: 2,
+        pointRadius: 2, pointHoverRadius: 5
+      };
+    });
+    new Chart(el, {
+      type: "line",
+      data: { labels: CHART.labels, datasets: ds },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        interaction: { mode: "index", intersect: false },
+        scales: {
+          y: { beginAtZero: true, title: { display: true, text: "Total points" },
+               ticks: { color: "#8b909c" }, grid: { color: "#2a2e38" } },
+          x: { ticks: { color: "#8b909c", maxRotation: 90, minRotation: 45 },
+               grid: { color: "#23262e" } }
+        },
+        plugins: {
+          legend: { labels: { color: "#e6e8ec", usePointStyle: true } },
+          tooltip: { itemSort: function (a, b) { return b.parsed.y - a.parsed.y; } }
+        }
+      }
+    });
+  })();
+</script>
+{% endblock %}

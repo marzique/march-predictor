@@ -13,6 +13,7 @@
     <nav>
       <a href="/">Matches</a>
       <a href="/leaderboard">Leaderboard</a>
+      <a href="/progress">Progress</a>
       <span class="me">{{ user["username"] }}</span>
       <a href="/logout">Logout</a>
     </nav>
@@ -67,6 +68,68 @@
     }
     cdTick();
     setInterval(cdTick, 1000);
+
+    // On load, jump to the next match to predict (first non-finished one).
+    (function () {
+      if (location.hash) return;                 // respect an explicit anchor
+      var fm = document.getElementById("focus-match");
+      if (fm) fm.scrollIntoView({ block: "start" });
+    })();
+
+    // Per-match comments: toggle, lazy-load, post — no page reload.
+    function cmtTime(iso) {
+      var d = new Date(iso);
+      return isNaN(d) ? "" : d.toLocaleString([], {
+        month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
+    }
+    function cmtRow(c) {
+      var row = document.createElement("div");
+      row.className = "cmt";
+      var who = document.createElement("span"); who.className = "cmt-who"; who.textContent = c.username;
+      var when = document.createElement("span"); when.className = "cmt-when"; when.textContent = cmtTime(c.created_at);
+      var body = document.createElement("div"); body.className = "cmt-body"; body.textContent = c.body;
+      var head = document.createElement("div"); head.className = "cmt-head";
+      head.appendChild(who); head.appendChild(when);
+      row.appendChild(head); row.appendChild(body);
+      return row;
+    }
+    document.querySelectorAll(".comments").forEach(function (box) {
+      var mid = box.getAttribute("data-match");
+      var toggle = box.querySelector(".cmt-toggle");
+      var panel = box.querySelector(".cmt-panel");
+      var list = box.querySelector(".cmt-list");
+      var form = box.querySelector(".cmt-form");
+      var input = box.querySelector(".cmt-input");
+      var count = box.querySelector(".cmt-count");
+      var loaded = false;
+
+      toggle.addEventListener("click", function () {
+        panel.hidden = !panel.hidden;
+        if (!panel.hidden && !loaded) {
+          loaded = true;
+          fetch("/comments/" + mid).then(function (r) { return r.json(); }).then(function (cs) {
+            list.innerHTML = "";
+            cs.forEach(function (c) { list.appendChild(cmtRow(c)); });
+            list.scrollTop = list.scrollHeight;
+          });
+        }
+      });
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        var text = input.value.trim();
+        if (!text) return;
+        var fd = new FormData(); fd.append("body", text);
+        fetch("/comment/" + mid, { method: "POST", body: fd })
+          .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
+          .then(function (c) {
+            list.appendChild(cmtRow(c));
+            list.scrollTop = list.scrollHeight;
+            input.value = "";
+            count.textContent = String(parseInt(count.textContent || "0", 10) + 1);
+          });
+      });
+    });
   </script>
 </body>
 </html>

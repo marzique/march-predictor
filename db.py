@@ -42,6 +42,14 @@ CREATE TABLE IF NOT EXISTS predictions (
     points    INTEGER NOT NULL DEFAULT 0,
     UNIQUE(user_id, match_id)
 );
+CREATE TABLE IF NOT EXISTS comments (
+    id         INTEGER PRIMARY KEY AUTOINCREMENT,
+    match_id   TEXT NOT NULL,
+    user_id    INTEGER NOT NULL,
+    body       TEXT NOT NULL,
+    created_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_comments_match ON comments(match_id, id);
 """
 
 

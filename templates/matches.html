@@ -3,157 +3,191 @@
 {% block main_class %}wide{% endblock %}
 {% block content %}
 <div class="layout">
-<aside class="board-side">
-  <div class="board-card">
-    <h2>🏆 Leaderboard</h2>
-    <table class="board">
-      <tbody>
-      {% for r in board %}
-        <tr class="{{ 'me-row' if r['username'] == user['username'] else '' }}">
-          <td class="rank">{{ loop.index }}</td>
-          <td class="who">{{ r["username"] }}</td>
-          <td class="tot"><b>{{ r["total"] }}</b></td>
-        </tr>
-      {% endfor %}
-      </tbody>
-    </table>
-  </div>
-</aside>
-
-<div class="matches-col">
-<div class="topbar">
-  <h1>Matches</h1>
-  <form method="post" action="/sync"><button class="ghost small">↻ Refresh</button></form>
-</div>
-
-<details class="scoring">
-  <summary>How points work</summary>
-  <ul>
-    <li><b>6</b> — exact score</li>
-    <li><b>4</b> — right outcome + right goal difference</li>
-    <li><b>3</b> — right outcome + one team's goals exact</li>
-    <li><b>2</b> — right outcome (win/draw)</li>
-    <li><b>0</b> — wrong outcome</li>
-  </ul>
-</details>
-
-{% if not items %}
-  <p class="hint">No matches yet. Hit ↻ Refresh.</p>
-{% endif %}
-
-<form id="bulk" method="post" action="/predict-bulk">
-{% for it in items %}
-{% set m = it.m %}{% set p = it.pred %}
-{% set needs = not it.locked and not p %}
-<div class="card match {{ 'locked' if it.locked else 'open' }} {{ 'needs-pred' if needs else '' }}">
-  <div class="meta">
-    <time class="localtime" datetime="{{ m['kickoff'] }}">{{ m["kickoff"].replace("T", " ")[:16] }} UTC</time>
-    {% if m["grp"] %}<span class="grp">Group {{ m["grp"] }}</span>{% endif %}
-    {% if m["finished"] %}<span class="final">FINAL</span>{% endif %}
-    {% if needs %}<span class="todo">Predict this!</span>
-    {% elif not it.locked %}<span class="editable">✏️ Open · editable</span>{% endif %}
-    {% if not it.locked %}<span class="countdown" data-kickoff="{{ m['kickoff'] }}">⏳ …</span>{% endif %}
-    {% if it.locked and it.others %}
-    <span class="picks-tip" tabindex="0">👥 {{ it.others|length }} picks
-      <span class="tip">
-        <span class="tip-title">Everyone's predictions</span>
-        <table>
-          {% for o in it.others %}
-          <tr class="{{ 'me' if o['username'] == user['username'] else '' }}">
-            <td class="u">{{ o["username"] }}</td>
-            <td class="s">{{ o["pred_home"] }}:{{ o["pred_away"] }}</td>
-            <td class="p">{% if m["finished"] %}+{{ o["points"] }}{% endif %}</td>
+  <aside class="board-side">
+    <div class="board-card">
+      <h2>🏆 Leaderboard</h2>
+      <table class="board">
+        <tbody>
+          {% for r in board %}
+          <tr class="{{ 'me-row' if r['username'] == user['username'] else '' }}">
+            <td class="rank">{{ loop.index }}</td>
+            <td class="who">{{ r["username"] }}</td>
+            <td class="tot"><b>{{ r["total"] }}</b></td>
           </tr>
           {% endfor %}
-        </table>
-      </span>
-    </span>
+        </tbody>
+      </table>
+    </div>
+  </aside>
+
+  <div class="matches-col">
+    <div class="topbar">
+      <h1>Matches</h1>
+      <form method="post" action="/sync"><button class="ghost small">↻ Refresh</button></form>
+    </div>
+
+    <details class="scoring">
+      <summary>How points work</summary>
+      <ul>
+        <li><b>6</b> — exact score</li>
+        <li><b>4</b> — right outcome + right goal difference</li>
+        <li><b>3</b> — right outcome + one team's goals exact</li>
+        <li><b>2</b> — right outcome (win/draw)</li>
+        <li><b>0</b> — wrong outcome</li>
+      </ul>
+    </details>
+
+    {% if not items %}
+    <p class="hint">No matches yet. Hit ↻ Refresh.</p>
     {% endif %}
-  </div>
 
-  <div class="fixture">
-      <div class="side">
-        {% if it.home_flag %}<img class="flag" src="{{ it.home_flag }}" alt="">{% endif %}
-        <span class="name">{{ m["home"] }}</span>
-      </div>
+    <form id="bulk" method="post" action="/predict-bulk">
+      {% set ns = namespace(focused=false) %}
+      {% for it in items %}
+      {% set m = it.m %}{% set p = it.pred %}
+      {% set needs = not it.locked and not p %}
+      {% set focus = (not m["finished"]) and (not ns.focused) %}
+      {% if focus %}{% set ns.focused = true %}{% endif %}
+      <div {% if focus %}id="focus-match"{% endif %} class="card match {{ 'locked' if it.locked else 'open' }} {{ 'needs-pred' if needs else '' }}">
+        <div class="meta">
+          <time class="localtime" datetime="{{ m['kickoff'] }}">{{ m["kickoff"].replace("T", " ")[:16] }} UTC</time>
+          {% if m["grp"] %}<span class="grp">Group {{ m["grp"] }}</span>{% endif %}
+          {% if m["finished"] %}<span class="final">FINAL</span>{% endif %}
+          {% if needs %}<span class="todo">Predict this!</span>
+          {% elif not it.locked %}<span class="editable">✏️ Open · editable</span>{% endif %}
+          {% if not it.locked %}<span class="countdown" data-kickoff="{{ m['kickoff'] }}">⏳ …</span>{% endif %}
+          {% if it.locked and it.others %}
+          <span class="picks-tip" tabindex="0">👥 {{ it.others|length }} picks
+            <span class="tip">
+              <span class="tip-title">Everyone's predictions</span>
+              <table>
+                {% for o in it.others %}
+                <tr class="{{ 'me' if o['username'] == user['username'] else '' }}">
+                  <td class="u">{{ o["username"] }}</td>
+                  <td class="s">{{ o["pred_home"] }}:{{ o["pred_away"] }}</td>
+                  <td class="p">{% if m["finished"] %}+{{ o["points"] }}{% endif %}</td>
+                </tr>
+                {% endfor %}
+              </table>
+            </span>
+          </span>
+          {% endif %}
+        </div>
 
-      <div class="score">
-        {% if it.locked %}
-          {# show final result if played, else the locked-in pick, else dashes #}
-          {% if m["finished"] %}
+        {% if not it.locked %}
+        <div class="predprog">
+          <div class="predprog-bar">
+            <div class="predprog-fill" style="width: {{ (it.ncount * 100 // it.nusers) if it.nusers else 0 }}%"></div>
+          </div>
+          <span class="predprog-txt picks-tip" tabindex="0">{{ it.ncount }}/{{ it.nusers }} predicted
+            <span class="tip">
+              {% if it.predictors %}
+              <span class="tip-title">✅ Predicted</span>
+              {% for u in it.predictors %}<span class="who-line {{ 'me' if u == user['username'] else '' }}">{{ u }}</span>{% endfor %}
+              {% endif %}
+              {% if it.missing %}
+              <span class="tip-title">⏳ Waiting</span>
+              {% for u in it.missing %}<span class="who-line muted {{ 'me' if u == user['username'] else '' }}">{{ u }}</span>{% endfor %}
+              {% endif %}
+            </span>
+          </span>
+        </div>
+        {% endif %}
+
+        <div class="fixture">
+          <div class="side">
+            {% if it.home_flag %}<img class="flag" src="{{ it.home_flag }}" alt="">{% endif %}
+            <span class="name">{{ m["home"] }}</span>
+          </div>
+
+          <div class="score">
+            {% if it.locked %}
+            {# show final result if played, else the locked-in pick, else dashes #}
+            {% if m["finished"] %}
             <span class="scorebox static">{{ m["home_score"] }}</span>
             <span class="colon">:</span>
             <span class="scorebox static">{{ m["away_score"] }}</span>
-          {% else %}
+            {% else %}
             <span class="scorebox static">{{ p["pred_home"] if p else "–" }}</span>
             <span class="colon">:</span>
             <span class="scorebox static">{{ p["pred_away"] if p else "–" }}</span>
-          {% endif %}
-        {% else %}
-          <input class="scorebox" type="number" name="h_{{ m['id'] }}" min="0"
-                 inputmode="numeric" value="{{ p['pred_home'] if p else '' }}"
-                 placeholder="0" form="bulk">
-          <span class="colon">:</span>
-          <input class="scorebox" type="number" name="a_{{ m['id'] }}" min="0"
-                 inputmode="numeric" value="{{ p['pred_away'] if p else '' }}"
-                 placeholder="0" form="bulk">
+            {% endif %}
+            {% else %}
+            <input class="scorebox" type="number" name="h_{{ m['id'] }}" min="0" inputmode="numeric"
+              value="{{ p['pred_home'] if p else '' }}" placeholder="0" form="bulk">
+            <span class="colon">:</span>
+            <input class="scorebox" type="number" name="a_{{ m['id'] }}" min="0" inputmode="numeric"
+              value="{{ p['pred_away'] if p else '' }}" placeholder="0" form="bulk">
+            {% endif %}
+          </div>
+
+          <div class="side">
+            {% if it.away_flag %}<img class="flag" src="{{ it.away_flag }}" alt="">{% endif %}
+            <span class="name">{{ m["away"] }}</span>
+          </div>
+        </div>
+
+        {% if m["finished"] and (it.home_scorers or it.away_scorers) %}
+        <div class="scorers">
+          <div class="sc-side">
+            {% for s in it.home_scorers %}<div class="sc">⚽ {{ s }}</div>{% endfor %}
+          </div>
+          <div class="sc-side away">
+            {% for s in it.away_scorers %}<div class="sc">{{ s }} ⚽</div>{% endfor %}
+          </div>
+        </div>
         {% endif %}
-      </div>
 
-      <div class="side">
-        {% if it.away_flag %}<img class="flag" src="{{ it.away_flag }}" alt="">{% endif %}
-        <span class="name">{{ m["away"] }}</span>
-      </div>
-    </div>
-
-  {% if m["finished"] and (it.home_scorers or it.away_scorers) %}
-    <div class="scorers">
-      <div class="sc-side">
-        {% for s in it.home_scorers %}<div class="sc">⚽ {{ s }}</div>{% endfor %}
-      </div>
-      <div class="sc-side away">
-        {% for s in it.away_scorers %}<div class="sc">{{ s }} ⚽</div>{% endfor %}
-      </div>
-    </div>
-  {% endif %}
-
-  {% if m["finished"] and p %}
-    {% set pts = p["points"] %}
-    {% set hh = p["pred_home"] == m["home_score"] %}
-    {% set ah = p["pred_away"] == m["away_score"] %}
-    {% set labels = {
+        {% if m["finished"] and p %}
+        {% set pts = p["points"] %}
+        {% set hh = p["pred_home"] == m["home_score"] %}
+        {% set ah = p["pred_away"] == m["away_score"] %}
+        {% set labels = {
         6: 'Exact score!',
         4: 'Right result &amp; goal difference',
         3: 'Right result &amp; one team&#39;s score',
         2: 'Right result',
         0: 'Missed it'} %}
-    <div class="result tier-{{ pts }}">
-      <div class="rbadge">
-        <span class="rpts">+{{ pts }}</span>
-      </div>
-      <div class="rmeta">
-        <div class="rlabel">{{ labels[pts] | safe }}</div>
-        <div class="rpick">Your pick
-          <b class="{{ 'hit' if hh else '' }}">{{ p["pred_home"] }}</b><span class="sep">:</span><b class="{{ 'hit' if ah else '' }}">{{ p["pred_away"] }}</b>
-          {% if pts == 4 %}<span class="chip">margin {{ '%+d' % (m["home_score"] - m["away_score"]) }}</span>{% endif %}
+        <div class="result tier-{{ pts }}">
+          <div class="rbadge">
+            <span class="rpts">+{{ pts }}</span>
+          </div>
+          <div class="rmeta">
+            <div class="rlabel">{{ labels[pts] | safe }}</div>
+            <div class="rpick">Your pick
+              <b class="{{ 'hit' if hh else '' }}">{{ p["pred_home"] }}</b><span class="sep">:</span><b
+                class="{{ 'hit' if ah else '' }}">{{ p["pred_away"] }}</b>
+              {% if pts == 4 %}<span class="chip">margin {{ '%+d' % (m["home_score"] - m["away_score"]) }}</span>{%
+              endif %}
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-  {% elif m["finished"] %}
-    <div class="pred-view"><span class="muted">No prediction made</span></div>
-  {% elif it.locked %}
-    <div class="pred-view"><span class="muted">{{ '🔒 Locked in' if p else '🔒 No prediction' }}</span></div>
-  {% endif %}
-</div>
-{% endfor %}
-</form>
+        {% elif m["finished"] %}
+        <div class="pred-view"><span class="muted">No prediction made</span></div>
+        {% elif it.locked %}
+        <div class="pred-view"><span class="muted">{{ '🔒 Locked in' if p else '🔒 No prediction' }}</span></div>
+        {% endif %}
 
-{% if items %}
-<div class="savebar">
-  <button type="submit" form="bulk" class="predict-btn new">💾 Save all predictions</button>
-  <span class="savehint">Fill both boxes of a match to save it.</span>
-</div>
-{% endif %}
-</div>
+        <!-- <div class="comments" data-match="{{ m['id'] }}">
+    <button type="button" class="cmt-toggle">💬 <span class="cmt-count">{{ it.ncomments }}</span> comments</button>
+    <div class="cmt-panel" hidden>
+      <div class="cmt-list"></div>
+      <form class="cmt-form">
+        <input class="cmt-input" name="body" maxlength="500" placeholder="Say something…" autocomplete="off">
+        <button type="submit">Send</button>
+      </form>
+    </div>
+  </div> -->
+      </div>
+      {% endfor %}
+    </form>
+
+    {% if items %}
+    <div class="savebar">
+      <button type="submit" form="bulk" class="predict-btn new">💾 Save all predictions</button>
+      <span class="savehint">Fill both boxes of a match to save it.</span>
+    </div>
+    {% endif %}
+  </div>
 </div>
 {% endblock %}

@@ -7,7 +7,7 @@ from pathlib import Path
 
 import bcrypt
 from fastapi import FastAPI, Form, Request
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.middleware.sessions import SessionMiddleware
@@ -117,20 +117,32 @@ async def home(request: Request):
             """SELECT p.match_id, u.username, p.pred_home, p.pred_away, p.points
                FROM predictions p JOIN users u ON u.id = p.user_id
                ORDER BY p.points DESC, u.username""").fetchall()
+        ccounts = {r["match_id"]: r["n"] for r in conn.execute(
+            "SELECT match_id, COUNT(*) AS n FROM comments GROUP BY match_id").fetchall()}
+        all_usernames = [r["username"] for r in
+                         conn.execute("SELECT username FROM users ORDER BY username")]
+    nusers = len(all_usernames)
     preds = {r["match_id"]: r for r in rows}
     others = {}
+    pred_users = {}
     for r in all_preds:
         others.setdefault(r["match_id"], []).append(r)
+        pred_users.setdefault(r["match_id"], set()).add(r["username"])
 
     items = []
     for m in matches:
         locked = m["kickoff"] <= now or m["finished"]
+        did = pred_users.get(m["id"], set())
         items.append({"m": m, "pred": preds.get(m["id"]), "locked": bool(locked),
                       "home_flag": flags.get(m["home_id"]),
                       "away_flag": flags.get(m["away_id"]),
                       "home_scorers": _scorers(m["home_scorers"]),
                       "away_scorers": _scorers(m["away_scorers"]),
-                      "others": others.get(m["id"], []) if locked else []})
+                      "others": others.get(m["id"], []) if locked else [],
+                      "ncomments": ccounts.get(m["id"], 0),
+                      "ncount": len(did), "nusers": nusers,
+                      "predictors": sorted(did, key=str.lower),
+                      "missing": [u for u in all_usernames if u not in did]})
     return render(request, "matches.html",
                   {"user": user, "items": items, "board": board})
 
@@ -196,6 +208,37 @@ async def predict_bulk(request: Request):
     return RedirectResponse("/", status_code=302)
 
 
+@app.get("/comments/{match_id}")
+async def get_comments(request: Request, match_id: str):
+    if not current_user(request):
+        return JSONResponse({"error": "auth"}, status_code=401)
+    with connect() as conn:
+        rows = conn.execute(
+            """SELECT u.username, c.body, c.created_at
+               FROM comments c JOIN users u ON u.id = c.user_id
+               WHERE c.match_id = ? ORDER BY c.id""", (match_id,)).fetchall()
+    return JSONResponse([dict(r) for r in rows])
+
+
+@app.post("/comment/{match_id}")
+async def add_comment(request: Request, match_id: str, body: str = Form(...)):
+    user = current_user(request)
+    if not user:
+        return JSONResponse({"error": "auth"}, status_code=401)
+    body = body.strip()[:500]
+    if not body:
+        return JSONResponse({"error": "empty"}, status_code=400)
+    created = datetime.now(timezone.utc).isoformat()
+    with connect() as conn:
+        m = conn.execute("SELECT id FROM matches WHERE id=?", (match_id,)).fetchone()
+        if not m:
+            return JSONResponse({"error": "no match"}, status_code=404)
+        conn.execute(
+            "INSERT INTO comments (match_id, user_id, body, created_at) VALUES (?,?,?,?)",
+            (match_id, user["id"], body, created))
+    return JSONResponse({"username": user["username"], "body": body, "created_at": created})
+
+
 @app.get("/leaderboard", response_class=HTMLResponse)
 async def leaderboard(request: Request):
     user = current_user(request)
@@ -204,6 +247,40 @@ async def leaderboard(request: Request):
     with connect() as conn:
         rows = fetch_leaderboard(conn)
     return render(request, "leaderboard.html", {"user": user, "rows": rows})
+
+
+@app.get("/progress", response_class=HTMLResponse)
+async def progress(request: Request):
+    """Cumulative points per user across finished matches (in date order)."""
+    user = current_user(request)
+    if not user:
+        return RedirectResponse("/login", status_code=302)
+    with connect() as conn:
+        matches = conn.execute(
+            "SELECT id, home, away FROM matches WHERE finished=1 ORDER BY kickoff, id"
+        ).fetchall()
+        users = conn.execute("SELECT id, username FROM users").fetchall()
+        preds = conn.execute(
+            "SELECT user_id, match_id, points FROM predictions").fetchall()
+
+    pts = {(p["user_id"], p["match_id"]): p["points"] for p in preds}
+    labels = ["Start"] + [f'{m["home"][:3].upper()}–{m["away"][:3].upper()}'
+                          for m in matches]
+
+    series = {}     # uid -> (username, cumulative list)
+    for u in users:
+        run, data = 0, [0]
+        for m in matches:
+            run += pts.get((u["id"], m["id"]), 0)
+            data.append(run)
+        series[u["id"]] = (u["username"], data)
+
+    # legend/draw order: highest final total first
+    datasets = [{"label": series[uid][0], "data": series[uid][1]}
+                for uid in sorted(series, key=lambda k: -series[k][1][-1])]
+    chart = {"labels": labels, "datasets": datasets}
+    return render(request, "progress.html",
+                  {"user": user, "chart": chart, "has_data": bool(matches)})
 
 
 # ------------------------------------------------------------------- auth ----
