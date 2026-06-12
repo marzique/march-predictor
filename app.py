@@ -112,7 +112,15 @@ async def home(request: Request):
         flags = {t["id"]: t["flag"]
                  for t in conn.execute("SELECT id, flag FROM teams").fetchall()}
         board = fetch_leaderboard(conn)
+        # everyone's predictions per match (only shown for locked matches)
+        all_preds = conn.execute(
+            """SELECT p.match_id, u.username, p.pred_home, p.pred_away, p.points
+               FROM predictions p JOIN users u ON u.id = p.user_id
+               ORDER BY p.points DESC, u.username""").fetchall()
     preds = {r["match_id"]: r for r in rows}
+    others = {}
+    for r in all_preds:
+        others.setdefault(r["match_id"], []).append(r)
 
     items = []
     for m in matches:
@@ -121,7 +129,8 @@ async def home(request: Request):
                       "home_flag": flags.get(m["home_id"]),
                       "away_flag": flags.get(m["away_id"]),
                       "home_scorers": _scorers(m["home_scorers"]),
-                      "away_scorers": _scorers(m["away_scorers"])})
+                      "away_scorers": _scorers(m["away_scorers"]),
+                      "others": others.get(m["id"], []) if locked else []})
     return render(request, "matches.html",
                   {"user": user, "items": items, "board": board})
 

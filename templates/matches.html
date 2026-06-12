@@ -52,6 +52,23 @@
     {% if m["finished"] %}<span class="final">FINAL</span>{% endif %}
     {% if needs %}<span class="todo">Predict this!</span>
     {% elif not it.locked %}<span class="editable">✏️ Open · editable</span>{% endif %}
+    {% if not it.locked %}<span class="countdown" data-kickoff="{{ m['kickoff'] }}">⏳ …</span>{% endif %}
+    {% if it.locked and it.others %}
+    <span class="picks-tip" tabindex="0">👥 {{ it.others|length }} picks
+      <span class="tip">
+        <span class="tip-title">Everyone's predictions</span>
+        <table>
+          {% for o in it.others %}
+          <tr class="{{ 'me' if o['username'] == user['username'] else '' }}">
+            <td class="u">{{ o["username"] }}</td>
+            <td class="s">{{ o["pred_home"] }}:{{ o["pred_away"] }}</td>
+            <td class="p">{% if m["finished"] %}+{{ o["points"] }}{% endif %}</td>
+          </tr>
+          {% endfor %}
+        </table>
+      </span>
+    </span>
+    {% endif %}
   </div>
 
   <div class="fixture">
@@ -104,7 +121,6 @@
     {% set pts = p["points"] %}
     {% set hh = p["pred_home"] == m["home_score"] %}
     {% set ah = p["pred_away"] == m["away_score"] %}
-    {% set icons = {6: '🎯', 4: '📏', 3: '½', 2: '✓', 0: '✗'} %}
     {% set labels = {
         6: 'Exact score!',
         4: 'Right result &amp; goal difference',
@@ -113,7 +129,6 @@
         0: 'Missed it'} %}
     <div class="result tier-{{ pts }}">
       <div class="rbadge">
-        <span class="ricon">{{ icons[pts] }}</span>
         <span class="rpts">+{{ pts }}</span>
       </div>
       <div class="rmeta">

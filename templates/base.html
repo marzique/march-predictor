@@ -31,6 +31,42 @@
         hour: "2-digit", minute: "2-digit"
       });
     });
+
+    // Live lock countdown for open matches.
+    function cdFormat(ms) {
+      var s = Math.floor(ms / 1000);
+      var d = Math.floor(s / 86400); s -= d * 86400;
+      var h = Math.floor(s / 3600);  s -= h * 3600;
+      var m = Math.floor(s / 60);    s -= m * 60;
+      var pad = function (n) { return String(n).padStart(2, "0"); };
+      if (d > 0) return d + "d " + h + "h";
+      if (h > 0) return h + "h " + pad(m) + "m";
+      if (m > 0) return m + "m " + pad(s) + "s";
+      return pad(s) + "s";
+    }
+    function cdTick() {
+      var now = Date.now();
+      document.querySelectorAll(".countdown").forEach(function (el) {
+        if (el.dataset.locked) return;
+        var left = new Date(el.getAttribute("data-kickoff")).getTime() - now;
+        if (left <= 0) {
+          el.textContent = "🔒 Locked";
+          el.classList.remove("urgent");
+          el.classList.add("locked-cd");
+          el.dataset.locked = "1";
+          var card = el.closest(".match");
+          if (card) {
+            card.classList.add("locked");
+            card.querySelectorAll("input.scorebox").forEach(function (i) { i.disabled = true; });
+          }
+        } else {
+          el.textContent = "⏳ " + cdFormat(left);
+          el.classList.toggle("urgent", left < 3600000); // < 1h
+        }
+      });
+    }
+    cdTick();
+    setInterval(cdTick, 1000);
   </script>
 </body>
 </html>
