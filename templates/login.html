@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
+{% block content %}
+<div class="card auth">
+  <h1>⚽ Match Predictor</h1>
+  {% if error %}<p class="error">{{ error }}</p>{% endif %}
+  <form method="post" action="/login">
+    <input name="username" placeholder="Username" autocomplete="username" required>
+    <input name="password" type="password" placeholder="Password"
+           autocomplete="current-password" required>
+    <div class="row">
+      <button type="submit" name="action" value="login">Log in</button>
+      <button type="submit" name="action" value="register" class="ghost">Register</button>
+    </div>
+  </form>
+  <p class="hint">New here? Type a username + password and hit Register.</p>
+</div>
+{% endblock %}

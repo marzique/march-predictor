@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Predictor{% endblock %}</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header>
+    <a href="/" class="brand">⚽ Predictor</a>
+    {% if user %}
+    <nav>
+      <a href="/">Matches</a>
+      <a href="/leaderboard">Leaderboard</a>
+      <span class="me">{{ user["username"] }}</span>
+      <a href="/logout">Logout</a>
+    </nav>
+    {% endif %}
+  </header>
+  <main class="{% block main_class %}{% endblock %}">
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

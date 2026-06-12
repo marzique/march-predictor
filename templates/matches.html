@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% block title %}Matches{% endblock %}
+{% block main_class %}wide{% endblock %}
+{% block content %}
+<div class="layout">
+<aside class="board-side">
+  <div class="board-card">
+    <h2>🏆 Leaderboard</h2>
+    <table class="board">
+      <tbody>
+      {% for r in board %}
+        <tr class="{{ 'me-row' if r['username'] == user['username'] else '' }}">
+          <td class="rank">{{ loop.index }}</td>
+          <td class="who">{{ r["username"] }}</td>
+          <td class="tot"><b>{{ r["total"] }}</b></td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</aside>
+
+<div class="matches-col">
+<div class="topbar">
+  <h1>Matches</h1>
+  <form method="post" action="/sync"><button class="ghost small">↻ Refresh</button></form>
+</div>
+
+<details class="scoring">
+  <summary>How points work</summary>
+  <ul>
+    <li><b>6</b> — exact score</li>
+    <li><b>4</b> — right outcome + right goal difference</li>
+    <li><b>3</b> — right outcome + one team's goals exact</li>
+    <li><b>2</b> — right outcome (win/draw)</li>
+    <li><b>0</b> — wrong outcome</li>
+  </ul>
+</details>
+
+{% if not items %}
+  <p class="hint">No matches yet. Hit ↻ Refresh.</p>
+{% endif %}
+
+{% for it in items %}
+{% set m = it.m %}{% set p = it.pred %}
+{% set needs = not it.locked and not p %}
+<div class="card match {{ 'locked' if it.locked else '' }} {{ 'needs-pred' if needs else '' }}">
+  <div class="meta">
+    <span>{{ m["kickoff"].replace("T", " ")[:16] }}</span>
+    {% if m["grp"] %}<span class="grp">Group {{ m["grp"] }}</span>{% endif %}
+    {% if m["finished"] %}<span class="final">FINAL</span>{% endif %}
+    {% if needs %}<span class="todo">Predict this!</span>{% endif %}
+  </div>
+
+  <form method="post" action="/predict/{{ m['id'] }}" class="match-form">
+    <div class="fixture">
+      <div class="side">
+        {% if it.home_flag %}<img class="flag" src="{{ it.home_flag }}" alt="">{% endif %}
+        <span class="name">{{ m["home"] }}</span>
+      </div>
+
+      <div class="score">
+        {% if it.locked %}
+          {# show final result if played, else the locked-in pick, else dashes #}
+          {% if m["finished"] %}
+            <span class="scorebox static">{{ m["home_score"] }}</span>
+            <span class="colon">:</span>
+            <span class="scorebox static">{{ m["away_score"] }}</span>
+          {% else %}
+            <span class="scorebox static">{{ p["pred_home"] if p else "–" }}</span>
+            <span class="colon">:</span>
+            <span class="scorebox static">{{ p["pred_away"] if p else "–" }}</span>
+          {% endif %}
+        {% else %}
+          <input class="scorebox" type="number" name="pred_home" min="0"
+                 inputmode="numeric" value="{{ p['pred_home'] if p else '' }}"
+                 placeholder="0" required>
+          <span class="colon">:</span>
+          <input class="scorebox" type="number" name="pred_away" min="0"
+                 inputmode="numeric" value="{{ p['pred_away'] if p else '' }}"
+                 placeholder="0" required>
+        {% endif %}
+      </div>
+
+      <div class="side">
+        {% if it.away_flag %}<img class="flag" src="{{ it.away_flag }}" alt="">{% endif %}
+        <span class="name">{{ m["away"] }}</span>
+      </div>
+    </div>
+
+    {% if not it.locked %}
+      <button type="submit" class="predict-btn {{ 'new' if not p else '' }}">
+        {{ 'Update prediction' if p else 'Predict' }}
+      </button>
+    {% endif %}
+  </form>
+
+  {% if m["finished"] and p %}
+    {% set pts = p["points"] %}
+    {% set hh = p["pred_home"] == m["home_score"] %}
+    {% set ah = p["pred_away"] == m["away_score"] %}
+    {% set icons = {6: '🎯', 4: '📏', 3: '½', 2: '✓', 0: '✗'} %}
+    {% set labels = {
+        6: 'Exact score!',
+        4: 'Right result &amp; goal difference',
+        3: 'Right result &amp; one team&#39;s score',
+        2: 'Right result',
+        0: 'Missed it'} %}
+    <div class="result tier-{{ pts }}">
+      <div class="rbadge">
+        <span class="ricon">{{ icons[pts] }}</span>
+        <span class="rpts">+{{ pts }}</span>
+      </div>
+      <div class="rmeta">
+        <div class="rlabel">{{ labels[pts] | safe }}</div>
+        <div class="rpick">Your pick
+          <b class="{{ 'hit' if hh else '' }}">{{ p["pred_home"] }}</b><span class="sep">:</span><b class="{{ 'hit' if ah else '' }}">{{ p["pred_away"] }}</b>
+          {% if pts == 4 %}<span class="chip">margin {{ '%+d' % (m["home_score"] - m["away_score"]) }}</span>{% endif %}
+        </div>
+      </div>
+    </div>
+  {% elif m["finished"] %}
+    <div class="pred-view"><span class="muted">No prediction made</span></div>
+  {% elif it.locked %}
+    <div class="pred-view"><span class="muted">{{ '🔒 Locked in' if p else '🔒 No prediction' }}</span></div>
+  {% endif %}
+</div>
+{% endfor %}
+</div>
+</div>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Backup{% endblock %}
+{% block content %}
+<h1>Backup</h1>
+
+<div class="card" style="border-color: var(--good);">
+  ✅ Snapshot saved: <b>{{ saved }}</b>
+</div>
+
+<div class="card">
+  <p class="hint" style="text-align:left;">
+    Dumped the whole database (users, matches, predictions) to JSON in
+    <code>backups/</code>. <code>latest.json</code> is always the newest.
+    Total snapshots: <b>{{ count }}</b>.
+  </p>
+  <div style="margin-top:12px;">
+    <a href="/backup"><button type="button">💾 Back up again</button></a>
+  </div>
+  <p class="hint" style="text-align:left; margin-top:14px;">
+    Restore from a terminal: <code>python backup.py restore</code>
+  </p>
+</div>
+{% endblock %}

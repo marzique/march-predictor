@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Leaderboard{% endblock %}
+{% block content %}
+<h1>Leaderboard</h1>
+<table class="board">
+  <thead><tr><th>#</th><th>Player</th><th>Points</th><th>Predicted</th></tr></thead>
+  <tbody>
+  {% for r in rows %}
+    <tr class="{{ 'me-row' if r['username'] == user['username'] else '' }}">
+      <td>{{ loop.index }}</td>
+      <td>{{ r["username"] }}</td>
+      <td><b>{{ r["total"] }}</b></td>
+      <td>{{ r["played"] }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

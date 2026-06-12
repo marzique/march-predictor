@@ -1,0 +1,14 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - link "⚽ Predictor" [ref=e3] [cursor=pointer]:
+      - /url: /
+  - main [ref=e4]:
+    - generic [ref=e5]:
+      - heading "⚽ Match Predictor" [level=1] [ref=e6]
+      - generic [ref=e7]:
+        - textbox "Username" [ref=e8]
+        - textbox "Password" [ref=e9]
+        - generic [ref=e10]:
+          - button "Log in" [ref=e11] [cursor=pointer]
+          - button "Register" [ref=e12] [cursor=pointer]
+      - paragraph [ref=e13]: New here? Type a username + password and hit Register.
