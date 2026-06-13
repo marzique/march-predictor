@@ -76,6 +76,36 @@
       if (fm) fm.scrollIntoView({ block: "start" });
     })();
 
+    // Team results tooltip: one shared map, tooltip built lazily on first hover.
+    var TEAM_RESULTS = {{ team_results | default({}) | tojson }};
+    function fillTeamTip(side) {
+      var tip = side.querySelector(".tip");
+      if (!tip || tip.dataset.filled) return;
+      tip.dataset.filled = "1";
+      var title = document.createElement("span");
+      title.className = "tip-title";
+      title.textContent = side.getAttribute("data-team-name") + " — results";
+      tip.appendChild(title);
+      var rs = (TEAM_RESULTS && TEAM_RESULTS[side.getAttribute("data-team")]) || [];
+      if (!rs.length) {
+        var none = document.createElement("span");
+        none.className = "muted"; none.textContent = "No results yet";
+        tip.appendChild(none); return;
+      }
+      rs.forEach(function (r) {
+        var line = document.createElement("span");
+        line.className = "res-line res-" + r.res;
+        line.textContent = r.res + " " + r.gf + "–" + r.ga + " ";
+        var em = document.createElement("em");
+        em.textContent = "vs " + r.opp;
+        line.appendChild(em);
+        tip.appendChild(line);
+      });
+    }
+    document.querySelectorAll(".team-tip").forEach(function (side) {
+      side.addEventListener("mouseenter", function () { fillTeamTip(side); });
+    });
+
     // Per-match comments: toggle, lazy-load, post — no page reload.
     function cmtTime(iso) {
       var d = new Date(iso);

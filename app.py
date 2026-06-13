@@ -129,6 +129,19 @@ async def home(request: Request):
         others.setdefault(r["match_id"], []).append(r)
         pred_users.setdefault(r["match_id"], set()).add(r["username"])
 
+    # each team's finished results (chronological — matches already sorted by kickoff)
+    team_results = {}
+    for m in matches:
+        if not m["finished"] or m["home_score"] is None or m["away_score"] is None:
+            continue
+        hs, as_ = m["home_score"], m["away_score"]
+        team_results.setdefault(m["home_id"], []).append(
+            {"res": "W" if hs > as_ else "D" if hs == as_ else "L",
+             "gf": hs, "ga": as_, "opp": m["away"]})
+        team_results.setdefault(m["away_id"], []).append(
+            {"res": "W" if as_ > hs else "D" if as_ == hs else "L",
+             "gf": as_, "ga": hs, "opp": m["home"]})
+
     items = []
     for m in matches:
         locked = m["kickoff"] <= now or m["finished"]
@@ -144,7 +157,8 @@ async def home(request: Request):
                       "predictors": sorted(did, key=str.lower),
                       "missing": [u for u in all_usernames if u not in did]})
     return render(request, "matches.html",
-                  {"user": user, "items": items, "board": board})
+                  {"user": user, "items": items, "board": board,
+                   "team_results": team_results})
 
 
 @app.post("/predict/{match_id}")

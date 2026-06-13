@@ -95,9 +95,11 @@
         {% endif %}
 
         <div class="fixture">
-          <div class="side">
+          <div class="side team-tip"
+               data-team="{{ m['home_id'] }}" data-team-name="{{ m['home'] }}">
             {% if it.home_flag %}<img class="flag" src="{{ it.home_flag }}" alt="">{% endif %}
             <span class="name">{{ m["home"] }}</span>
+            <span class="tip"></span>
           </div>
 
           <div class="score">
@@ -121,9 +123,11 @@
             {% endif %}
           </div>
 
-          <div class="side">
+          <div class="side team-tip"
+               data-team="{{ m['away_id'] }}" data-team-name="{{ m['away'] }}">
             {% if it.away_flag %}<img class="flag" src="{{ it.away_flag }}" alt="">{% endif %}
             <span class="name">{{ m["away"] }}</span>
+            <span class="tip"></span>
           </div>
         </div>
 
