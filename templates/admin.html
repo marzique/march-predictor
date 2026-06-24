@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Admin{% endblock %}
+{% block content %}
+<h1>🛠️ Admin — set results</h1>
+<p class="hint" style="text-align:left;">
+  Manual results override the API sync (it won't touch them). Scorers: comma-separated,
+  e.g. <code>Messi 23', Suárez 80'</code>. "Clear" hands the match back to the API.
+</p>
+
+{% for it in items %}
+{% set m = it.m %}
+<div class="card admin-row">
+  <div class="admin-teams">
+    <b>{{ m["home"] }}</b> vs <b>{{ m["away"] }}</b>
+    {% if m["manual"] %}<span class="tag-manual">MANUAL</span>
+    {% elif m["finished"] %}<span class="final">API FINAL</span>{% endif %}
+    <span class="muted" style="font-size:12px;"> · {{ m["kickoff"][:16].replace("T"," ") }} UTC</span>
+  </div>
+  <form method="post" action="/admin/result/{{ m['id'] }}" class="admin-form">
+    <div class="admin-line">
+      <input type="number" name="home_score" min="0" placeholder="–"
+             value="{{ m['home_score'] if m['home_score'] is not none else '' }}">
+      <span class="colon">:</span>
+      <input type="number" name="away_score" min="0" placeholder="–"
+             value="{{ m['away_score'] if m['away_score'] is not none else '' }}">
+    </div>
+    <input type="text" name="home_scorers" placeholder="{{ m['home'] }} scorers" value="{{ it.home_scorers }}">
+    <input type="text" name="away_scorers" placeholder="{{ m['away'] }} scorers" value="{{ it.away_scorers }}">
+    <div class="admin-btns">
+      <button type="submit" name="action" value="save">Save result</button>
+      {% if m["manual"] %}<button type="submit" name="action" value="clear" class="ghost">Clear</button>{% endif %}
+    </div>
+  </form>
+</div>
+{% endfor %}
+{% endblock %}

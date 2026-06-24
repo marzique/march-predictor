@@ -1,11 +1,11 @@
 {
-  "created_at": "2026-06-24T01:19:53",
+  "created_at": "2026-06-22T03:12:04",
   "label": "manual",
   "counts": {
     "users": 6,
     "teams": 48,
     "matches": 104,
-    "predictions": 359,
+    "predictions": 282,
     "comments": 0
   },
   "tables": {
@@ -937,13 +937,13 @@
         "home_id": "28",
         "away_id": "26",
         "kickoff": "2026-06-22T01:00:00+00:00",
-        "home_score": 1,
-        "away_score": 3,
-        "finished": 1,
+        "home_score": null,
+        "away_score": null,
+        "finished": 0,
         "grp": "G",
         "matchday": "2",
-        "home_scorers": "[\"Fin Svrman 15'\"]",
-        "away_scorers": "[\"Mostafa Ziko 58'\", \"Mohamed Salah 67'\", \"Mahmoud Hassan Trezeguet 82'\"]",
+        "home_scorers": "[]",
+        "away_scorers": "[]",
         "manual": 0
       },
       {
@@ -985,12 +985,12 @@
         "home_id": "33",
         "away_id": "35",
         "kickoff": "2026-06-22T21:00:00+00:00",
-        "home_score": 3,
-        "away_score": 0,
-        "finished": 1,
+        "home_score": null,
+        "away_score": null,
+        "finished": 0,
         "grp": "I",
         "matchday": "2",
-        "home_scorers": "[\"Kylian Mbappé 14'\", \"Kylian Mbappé 54'\", \"Ousmane Dembélé 66'\"]",
+        "home_scorers": "[]",
         "away_scorers": "[]",
         "manual": 0
       },
@@ -1001,13 +1001,13 @@
         "home_id": "36",
         "away_id": "34",
         "kickoff": "2026-06-23T00:00:00+00:00",
-        "home_score": 3,
-        "away_score": 2,
-        "finished": 1,
+        "home_score": null,
+        "away_score": null,
+        "finished": 0,
         "grp": "I",
         "matchday": "2",
-        "home_scorers": "[\"Markvs Hlmgrn Pdrsn 43'\", \"Erling Haaland 48'\", \"Erling Haaland 58'\"]",
-        "away_scorers": "[\"Ismaïla Sarr 53'\", \"Ismaïla Sarr 90+3'\"]",
+        "home_scorers": "[]",
+        "away_scorers": "[]",
         "manual": 0
       },
       {
@@ -1017,12 +1017,12 @@
         "home_id": "37",
         "away_id": "39",
         "kickoff": "2026-06-22T17:00:00+00:00",
-        "home_score": 2,
-        "away_score": 0,
-        "finished": 1,
+        "home_score": null,
+        "away_score": null,
+        "finished": 0,
         "grp": "J",
         "matchday": "2",
-        "home_scorers": "[\"Lionel Messi 38'\", \"Lionel Messi 90+5'\"]",
+        "home_scorers": "[]",
         "away_scorers": "[]",
         "manual": 0
       },
@@ -1033,13 +1033,13 @@
         "home_id": "40",
         "away_id": "38",
         "kickoff": "2026-06-23T03:00:00+00:00",
-        "home_score": 1,
-        "away_score": 2,
-        "finished": 1,
+        "home_score": null,
+        "away_score": null,
+        "finished": 0,
         "grp": "J",
         "matchday": "2",
-        "home_scorers": "[\"Al Rashdan 36'\"]",
-        "away_scorers": "[\"Nzir Bnbvali 69'\", \"Amine Gouiri 82'\"]",
+        "home_scorers": "[]",
+        "away_scorers": "[]",
         "manual": 0
       },
       {
@@ -1049,12 +1049,12 @@
         "home_id": "41",
         "away_id": "43",
         "kickoff": "2026-06-23T17:00:00+00:00",
-        "home_score": 5,
-        "away_score": 0,
-        "finished": 1,
+        "home_score": null,
+        "away_score": null,
+        "finished": 0,
         "grp": "K",
         "matchday": "2",
-        "home_scorers": "[\"Cristiano Ronaldo 6'\", \"Nvnv Mndz 17'\", \"Cristiano Ronaldo 39'\", \"Abdalvhid Namtvf 60'\", \"Rafael Leão 87'\"]",
+        "home_scorers": "[]",
         "away_scorers": "[]",
         "manual": 0
       },
@@ -1097,9 +1097,9 @@
         "home_id": "45",
         "away_id": "47",
         "kickoff": "2026-06-23T20:00:00+00:00",
-        "home_score": 0,
-        "away_score": 0,
-        "finished": 1,
+        "home_score": null,
+        "away_score": null,
+        "finished": 0,
         "grp": "L",
         "matchday": "2",
         "home_scorers": "[]",
@@ -2506,7 +2506,7 @@
         "match_id": "679c9c8a5749c4077500e038",
         "pred_home": 0,
         "pred_away": 2,
-        "points": 4
+        "points": 0
       },
       {
         "id": 137,
@@ -2522,7 +2522,7 @@
         "match_id": "679c9c8a5749c4077500e043",
         "pred_home": 2,
         "pred_away": 1,
-        "points": 3
+        "points": 0
       },
       {
         "id": 139,
@@ -2530,7 +2530,7 @@
         "match_id": "679c9c8a5749c4077500e041",
         "pred_home": 3,
         "pred_away": 0,
-        "points": 6
+        "points": 0
       },
       {
         "id": 140,
@@ -3498,7 +3498,7 @@
         "match_id": "679c9c8a5749c4077500e038",
         "pred_home": 1,
         "pred_away": 2,
-        "points": 3
+        "points": 0
       },
       {
         "id": 620,
@@ -3506,15 +3506,15 @@
         "match_id": "679c9c8a5749c4077500e043",
         "pred_home": 3,
         "pred_away": 1,
-        "points": 4
+        "points": 0
       },
       {
         "id": 621,
         "user_id": 5,
         "match_id": "679c9c8a5749c4077500e041",
-        "pred_home": 5,
+        "pred_home": 4,
         "pred_away": 0,
-        "points": 3
+        "points": 0
       },
       {
         "id": 622,
@@ -3522,15 +3522,15 @@
         "match_id": "679c9c8a5749c4077500e042",
         "pred_home": 2,
         "pred_away": 1,
-        "points": 4
+        "points": 0
       },
       {
         "id": 623,
         "user_id": 5,
         "match_id": "679c9c8a5749c4077500e044",
         "pred_home": 0,
-        "pred_away": 2,
-        "points": 3
+        "pred_away": 1,
+        "points": 0
       },
       {
         "id": 624,
@@ -3538,14 +3538,14 @@
         "match_id": "679c9c8a5749c4077500e045",
         "pred_home": 3,
         "pred_away": 0,
-        "points": 3
+        "points": 0
       },
       {
         "id": 625,
         "user_id": 5,
         "match_id": "679c9c8a5749c4077500e048",
-        "pred_home": 3,
-        "pred_away": 1,
+        "pred_home": 1,
+        "pred_away": 0,
         "points": 0
       },
       {
@@ -3730,7 +3730,7 @@
         "match_id": "679c9c8a5749c4077500e038",
         "pred_home": 1,
         "pred_away": 3,
-        "points": 6
+        "points": 0
       },
       {
         "id": 710,
@@ -3738,7 +3738,7 @@
         "match_id": "679c9c8a5749c4077500e043",
         "pred_home": 2,
         "pred_away": 0,
-        "points": 6
+        "points": 0
       },
       {
         "id": 711,
@@ -3746,7 +3746,7 @@
         "match_id": "679c9c8a5749c4077500e041",
         "pred_home": 3,
         "pred_away": 0,
-        "points": 6
+        "points": 0
       },
       {
         "id": 712,
@@ -3762,21 +3762,21 @@
         "match_id": "679c9c8a5749c4077500e044",
         "pred_home": 0,
         "pred_away": 2,
-        "points": 3
+        "points": 0
       },
       {
         "id": 714,
         "user_id": 4,
         "match_id": "679c9c8a5749c4077500e045",
-        "pred_home": 2,
+        "pred_home": 3,
         "pred_away": 1,
-        "points": 2
+        "points": 0
       },
       {
         "id": 715,
         "user_id": 4,
         "match_id": "679c9c8a5749c4077500e048",
-        "pred_home": 2,
+        "pred_home": 1,
         "pred_away": 0,
         "points": 0
       },
@@ -4018,7 +4018,7 @@
         "match_id": "679c9c8a5749c4077500e038",
         "pred_home": 1,
         "pred_away": 2,
-        "points": 3
+        "points": 0
       },
       {
         "id": 918,
@@ -4026,7 +4026,7 @@
         "match_id": "679c9c8a5749c4077500e043",
         "pred_home": 3,
         "pred_away": 1,
-        "points": 4
+        "points": 0
       },
       {
         "id": 919,
@@ -4034,7 +4034,7 @@
         "match_id": "679c9c8a5749c4077500e041",
         "pred_home": 5,
         "pred_away": 0,
-        "points": 3
+        "points": 0
       },
       {
         "id": 920,
@@ -4042,7 +4042,7 @@
         "match_id": "679c9c8a5749c4077500e042",
         "pred_home": 2,
         "pred_away": 1,
-        "points": 4
+        "points": 0
       },
       {
         "id": 921,
@@ -4050,7 +4050,7 @@
         "match_id": "679c9c8a5749c4077500e044",
         "pred_home": 0,
         "pred_away": 3,
-        "points": 2
+        "points": 0
       },
       {
         "id": 922,
@@ -4058,7 +4058,7 @@
         "match_id": "679c9c8a5749c4077500e045",
         "pred_home": 3,
         "pred_away": 0,
-        "points": 3
+        "points": 0
       },
       {
         "id": 989,
@@ -4066,7 +4066,7 @@
         "match_id": "679c9c8a5749c4077500e044",
         "pred_home": 0,
         "pred_away": 1,
-        "points": 4
+        "points": 0
       },
       {
         "id": 990,
@@ -4074,7 +4074,7 @@
         "match_id": "679c9c8a5749c4077500e045",
         "pred_home": 3,
         "pred_away": 0,
-        "points": 3
+        "points": 0
       },
       {
         "id": 991,
@@ -4186,7 +4186,7 @@
         "match_id": "679c9c8a5749c4077500e038",
         "pred_home": 0,
         "pred_away": 3,
-        "points": 3
+        "points": 0
       },
       {
         "id": 1015,
@@ -4194,7 +4194,7 @@
         "match_id": "679c9c8a5749c4077500e043",
         "pred_home": 2,
         "pred_away": 1,
-        "points": 3
+        "points": 0
       },
       {
         "id": 1016,
@@ -4202,7 +4202,7 @@
         "match_id": "679c9c8a5749c4077500e041",
         "pred_home": 6,
         "pred_away": 0,
-        "points": 3
+        "points": 0
       },
       {
         "id": 1017,
@@ -4210,7 +4210,7 @@
         "match_id": "679c9c8a5749c4077500e042",
         "pred_home": 3,
         "pred_away": 1,
-        "points": 3
+        "points": 0
       },
       {
         "id": 1018,
@@ -4226,7 +4226,7 @@
         "match_id": "679c9c8a5749c4077500e045",
         "pred_home": 3,
         "pred_away": 0,
-        "points": 3
+        "points": 0
       },
       {
         "id": 1020,
@@ -4242,7 +4242,7 @@
         "match_id": "679c9c8a5749c4077500e038",
         "pred_home": 1,
         "pred_away": 2,
-        "points": 3
+        "points": 0
       },
       {
         "id": 1050,
@@ -4250,629 +4250,13 @@
         "match_id": "679c9c8a5749c4077500e043",
         "pred_home": 3,
         "pred_away": 0,
-        "points": 3
+        "points": 0
       },
       {
         "id": 1051,
         "user_id": 1,
         "match_id": "679c9c8a5749c4077500e041",
         "pred_home": 4,
-        "pred_away": 0,
-        "points": 3
-      },
-      {
-        "id": 1081,
-        "user_id": 2,
-        "match_id": "679c9c8a5749c4077500e060",
-        "pred_home": 0,
-        "pred_away": 3,
-        "points": 0
-      },
-      {
-        "id": 1082,
-        "user_id": 2,
-        "match_id": "679c9c8a5749c4077500e057",
-        "pred_home": 1,
-        "pred_away": 1,
-        "points": 0
-      },
-      {
-        "id": 1083,
-        "user_id": 2,
-        "match_id": "679c9c8a5749c4077500e058",
-        "pred_home": 1,
-        "pred_away": 1,
-        "points": 0
-      },
-      {
-        "id": 1089,
-        "user_id": 3,
-        "match_id": "679c9c8a5749c4077500e048",
-        "pred_home": 3,
-        "pred_away": 0,
-        "points": 0
-      },
-      {
-        "id": 1090,
-        "user_id": 3,
-        "match_id": "679c9c8a5749c4077500e046",
-        "pred_home": 0,
-        "pred_away": 2,
-        "points": 0
-      },
-      {
-        "id": 1091,
-        "user_id": 3,
-        "match_id": "679c9c8a5749c4077500e047",
-        "pred_home": 3,
-        "pred_away": 1,
-        "points": 0
-      },
-      {
-        "id": 1092,
-        "user_id": 3,
-        "match_id": "679c9c8a5749c4077500e053",
-        "pred_home": 1,
-        "pred_away": 0,
-        "points": 0
-      },
-      {
-        "id": 1093,
-        "user_id": 3,
-        "match_id": "679c9c8a5749c4077500e054",
-        "pred_home": 3,
-        "pred_away": 2,
-        "points": 0
-      },
-      {
-        "id": 1100,
-        "user_id": 6,
-        "match_id": "679c9c8a5749c4077500e046",
-        "pred_home": 0,
-        "pred_away": 2,
-        "points": 0
-      },
-      {
-        "id": 1101,
-        "user_id": 6,
-        "match_id": "679c9c8a5749c4077500e047",
-        "pred_home": 2,
-        "pred_away": 1,
-        "points": 0
-      },
-      {
-        "id": 1102,
-        "user_id": 6,
-        "match_id": "679c9c8a5749c4077500e053",
-        "pred_home": 2,
-        "pred_away": 2,
-        "points": 0
-      },
-      {
-        "id": 1103,
-        "user_id": 6,
-        "match_id": "679c9c8a5749c4077500e054",
-        "pred_home": 1,
-        "pred_away": 1,
-        "points": 0
-      },
-      {
-        "id": 1104,
-        "user_id": 6,
-        "match_id": "679c9c8a5749c4077500e049",
-        "pred_home": 1,
-        "pred_away": 2,
-        "points": 0
-      },
-      {
-        "id": 1105,
-        "user_id": 6,
-        "match_id": "679c9c8a5749c4077500e050",
-        "pred_home": 3,
-        "pred_away": 0,
-        "points": 0
-      },
-      {
-        "id": 1106,
-        "user_id": 6,
-        "match_id": "679c9c8a5749c4077500e051",
-        "pred_home": 1,
-        "pred_away": 2,
-        "points": 0
-      },
-      {
-        "id": 1107,
-        "user_id": 6,
-        "match_id": "679c9c8a5749c4077500e052",
-        "pred_home": 1,
-        "pred_away": 2,
-        "points": 0
-      },
-      {
-        "id": 1108,
-        "user_id": 6,
-        "match_id": "679c9c8a5749c4077500e055",
-        "pred_home": 0,
-        "pred_away": 3,
-        "points": 0
-      },
-      {
-        "id": 1109,
-        "user_id": 6,
-        "match_id": "679c9c8a5749c4077500e056",
-        "pred_home": 1,
-        "pred_away": 2,
-        "points": 0
-      },
-      {
-        "id": 1110,
-        "user_id": 6,
-        "match_id": "679c9c8a5749c4077500e059",
-        "pred_home": 2,
-        "pred_away": 1,
-        "points": 0
-      },
-      {
-        "id": 1111,
-        "user_id": 6,
-        "match_id": "679c9c8a5749c4077500e060",
-        "pred_home": 0,
-        "pred_away": 4,
-        "points": 0
-      },
-      {
-        "id": 1112,
-        "user_id": 6,
-        "match_id": "679c9c8a5749c4077500e057",
-        "pred_home": 1,
-        "pred_away": 1,
-        "points": 0
-      },
-      {
-        "id": 1113,
-        "user_id": 6,
-        "match_id": "679c9c8a5749c4077500e058",
-        "pred_home": 2,
-        "pred_away": 2,
-        "points": 0
-      },
-      {
-        "id": 1119,
-        "user_id": 4,
-        "match_id": "679c9c8a5749c4077500e046",
-        "pred_home": 0,
-        "pred_away": 2,
-        "points": 0
-      },
-      {
-        "id": 1120,
-        "user_id": 4,
-        "match_id": "679c9c8a5749c4077500e047",
-        "pred_home": 2,
-        "pred_away": 0,
-        "points": 0
-      },
-      {
-        "id": 1121,
-        "user_id": 4,
-        "match_id": "679c9c8a5749c4077500e053",
-        "pred_home": 2,
-        "pred_away": 0,
-        "points": 0
-      },
-      {
-        "id": 1122,
-        "user_id": 4,
-        "match_id": "679c9c8a5749c4077500e054",
-        "pred_home": 1,
-        "pred_away": 1,
-        "points": 0
-      },
-      {
-        "id": 1123,
-        "user_id": 4,
-        "match_id": "679c9c8a5749c4077500e049",
-        "pred_home": 1,
-        "pred_away": 3,
-        "points": 0
-      },
-      {
-        "id": 1124,
-        "user_id": 4,
-        "match_id": "679c9c8a5749c4077500e050",
-        "pred_home": 2,
-        "pred_away": 0,
-        "points": 0
-      },
-      {
-        "id": 1125,
-        "user_id": 4,
-        "match_id": "679c9c8a5749c4077500e051",
-        "pred_home": 0,
-        "pred_away": 2,
-        "points": 0
-      },
-      {
-        "id": 1126,
-        "user_id": 4,
-        "match_id": "679c9c8a5749c4077500e052",
-        "pred_home": 1,
-        "pred_away": 2,
-        "points": 0
-      },
-      {
-        "id": 1127,
-        "user_id": 4,
-        "match_id": "679c9c8a5749c4077500e055",
-        "pred_home": 0,
-        "pred_away": 2,
-        "points": 0
-      },
-      {
-        "id": 1128,
-        "user_id": 4,
-        "match_id": "679c9c8a5749c4077500e056",
-        "pred_home": 1,
-        "pred_away": 3,
-        "points": 0
-      },
-      {
-        "id": 1129,
-        "user_id": 4,
-        "match_id": "679c9c8a5749c4077500e059",
-        "pred_home": 2,
-        "pred_away": 1,
-        "points": 0
-      },
-      {
-        "id": 1130,
-        "user_id": 4,
-        "match_id": "679c9c8a5749c4077500e060",
-        "pred_home": 0,
-        "pred_away": 2,
-        "points": 0
-      },
-      {
-        "id": 1131,
-        "user_id": 4,
-        "match_id": "679c9c8a5749c4077500e057",
-        "pred_home": 2,
-        "pred_away": 1,
-        "points": 0
-      },
-      {
-        "id": 1132,
-        "user_id": 4,
-        "match_id": "679c9c8a5749c4077500e058",
-        "pred_home": 1,
-        "pred_away": 4,
-        "points": 0
-      },
-      {
-        "id": 1133,
-        "user_id": 4,
-        "match_id": "679c9c8a5749c4077500e061",
-        "pred_home": 2,
-        "pred_away": 0,
-        "points": 0
-      },
-      {
-        "id": 1134,
-        "user_id": 4,
-        "match_id": "679c9c8a5749c4077500e062",
-        "pred_home": 1,
-        "pred_away": 3,
-        "points": 0
-      },
-      {
-        "id": 1136,
-        "user_id": 1,
-        "match_id": "679c9c8a5749c4077500e042",
-        "pred_home": 2,
-        "pred_away": 1,
-        "points": 4
-      },
-      {
-        "id": 1137,
-        "user_id": 1,
-        "match_id": "679c9c8a5749c4077500e044",
-        "pred_home": 1,
-        "pred_away": 2,
-        "points": 6
-      },
-      {
-        "id": 1169,
-        "user_id": 5,
-        "match_id": "679c9c8a5749c4077500e046",
-        "pred_home": 0,
-        "pred_away": 2,
-        "points": 0
-      },
-      {
-        "id": 1170,
-        "user_id": 5,
-        "match_id": "679c9c8a5749c4077500e047",
-        "pred_home": 1,
-        "pred_away": 2,
-        "points": 0
-      },
-      {
-        "id": 1171,
-        "user_id": 5,
-        "match_id": "679c9c8a5749c4077500e053",
-        "pred_home": 2,
-        "pred_away": 1,
-        "points": 0
-      },
-      {
-        "id": 1172,
-        "user_id": 5,
-        "match_id": "679c9c8a5749c4077500e054",
-        "pred_home": 1,
-        "pred_away": 2,
-        "points": 0
-      },
-      {
-        "id": 1173,
-        "user_id": 5,
-        "match_id": "679c9c8a5749c4077500e049",
-        "pred_home": 1,
-        "pred_away": 2,
-        "points": 0
-      },
-      {
-        "id": 1174,
-        "user_id": 5,
-        "match_id": "679c9c8a5749c4077500e050",
-        "pred_home": 3,
-        "pred_away": 0,
-        "points": 0
-      },
-      {
-        "id": 1175,
-        "user_id": 5,
-        "match_id": "679c9c8a5749c4077500e051",
-        "pred_home": 1,
-        "pred_away": 2,
-        "points": 0
-      },
-      {
-        "id": 1176,
-        "user_id": 5,
-        "match_id": "679c9c8a5749c4077500e052",
-        "pred_home": 1,
-        "pred_away": 1,
-        "points": 0
-      },
-      {
-        "id": 1177,
-        "user_id": 5,
-        "match_id": "679c9c8a5749c4077500e055",
-        "pred_home": 0,
-        "pred_away": 3,
-        "points": 0
-      },
-      {
-        "id": 1178,
-        "user_id": 5,
-        "match_id": "679c9c8a5749c4077500e056",
-        "pred_home": 1,
-        "pred_away": 3,
-        "points": 0
-      },
-      {
-        "id": 1181,
-        "user_id": 1,
-        "match_id": "679c9c8a5749c4077500e045",
-        "pred_home": 2,
-        "pred_away": 0,
-        "points": 3
-      },
-      {
-        "id": 1182,
-        "user_id": 1,
-        "match_id": "679c9c8a5749c4077500e048",
-        "pred_home": 3,
-        "pred_away": 1,
-        "points": 0
-      },
-      {
-        "id": 1183,
-        "user_id": 1,
-        "match_id": "679c9c8a5749c4077500e046",
-        "pred_home": 0,
-        "pred_away": 2,
-        "points": 0
-      },
-      {
-        "id": 1189,
-        "user_id": 3,
-        "match_id": "679c9c8a5749c4077500e049",
-        "pred_home": 1,
-        "pred_away": 2,
-        "points": 0
-      },
-      {
-        "id": 1190,
-        "user_id": 3,
-        "match_id": "679c9c8a5749c4077500e050",
-        "pred_home": 4,
-        "pred_away": 0,
-        "points": 0
-      },
-      {
-        "id": 1191,
-        "user_id": 3,
-        "match_id": "679c9c8a5749c4077500e051",
-        "pred_home": 0,
-        "pred_away": 2,
-        "points": 0
-      },
-      {
-        "id": 1192,
-        "user_id": 3,
-        "match_id": "679c9c8a5749c4077500e052",
-        "pred_home": 1,
-        "pred_away": 2,
-        "points": 0
-      },
-      {
-        "id": 1193,
-        "user_id": 3,
-        "match_id": "679c9c8a5749c4077500e055",
-        "pred_home": 0,
-        "pred_away": 3,
-        "points": 0
-      },
-      {
-        "id": 1194,
-        "user_id": 3,
-        "match_id": "679c9c8a5749c4077500e056",
-        "pred_home": 1,
-        "pred_away": 3,
-        "points": 0
-      },
-      {
-        "id": 1195,
-        "user_id": 3,
-        "match_id": "679c9c8a5749c4077500e059",
-        "pred_home": 2,
-        "pred_away": 1,
-        "points": 0
-      },
-      {
-        "id": 1196,
-        "user_id": 3,
-        "match_id": "679c9c8a5749c4077500e060",
-        "pred_home": 0,
-        "pred_away": 3,
-        "points": 0
-      },
-      {
-        "id": 1197,
-        "user_id": 3,
-        "match_id": "679c9c8a5749c4077500e057",
-        "pred_home": 2,
-        "pred_away": 1,
-        "points": 0
-      },
-      {
-        "id": 1198,
-        "user_id": 3,
-        "match_id": "679c9c8a5749c4077500e058",
-        "pred_home": 2,
-        "pred_away": 2,
-        "points": 0
-      },
-      {
-        "id": 1199,
-        "user_id": 3,
-        "match_id": "679c9c8a5749c4077500e061",
-        "pred_home": 3,
-        "pred_away": 0,
-        "points": 0
-      },
-      {
-        "id": 1200,
-        "user_id": 3,
-        "match_id": "679c9c8a5749c4077500e062",
-        "pred_home": 2,
-        "pred_away": 3,
-        "points": 0
-      },
-      {
-        "id": 1201,
-        "user_id": 3,
-        "match_id": "679c9c8a5749c4077500e065",
-        "pred_home": 2,
-        "pred_away": 1,
-        "points": 0
-      },
-      {
-        "id": 1202,
-        "user_id": 3,
-        "match_id": "679c9c8a5749c4077500e066",
-        "pred_home": 1,
-        "pred_away": 3,
-        "points": 0
-      },
-      {
-        "id": 1203,
-        "user_id": 3,
-        "match_id": "679c9c8a5749c4077500e063",
-        "pred_home": 2,
-        "pred_away": 1,
-        "points": 0
-      },
-      {
-        "id": 1204,
-        "user_id": 3,
-        "match_id": "679c9c8a5749c4077500e064",
-        "pred_home": 0,
-        "pred_away": 2,
-        "points": 0
-      },
-      {
-        "id": 1205,
-        "user_id": 3,
-        "match_id": "679c9c8a5749c4077500e067",
-        "pred_home": 0,
-        "pred_away": 3,
-        "points": 0
-      },
-      {
-        "id": 1206,
-        "user_id": 3,
-        "match_id": "679c9c8a5749c4077500e068",
-        "pred_home": 2,
-        "pred_away": 0,
-        "points": 0
-      },
-      {
-        "id": 1207,
-        "user_id": 3,
-        "match_id": "679c9c8a5749c4077500e071",
-        "pred_home": 1,
-        "pred_away": 3,
-        "points": 0
-      },
-      {
-        "id": 1208,
-        "user_id": 3,
-        "match_id": "679c9c8a5749c4077500e072",
-        "pred_home": 2,
-        "pred_away": 0,
-        "points": 0
-      },
-      {
-        "id": 1209,
-        "user_id": 3,
-        "match_id": "679c9c8a5749c4077500e069",
-        "pred_home": 1,
-        "pred_away": 2,
-        "points": 0
-      },
-      {
-        "id": 1210,
-        "user_id": 3,
-        "match_id": "679c9c8a5749c4077500e070",
-        "pred_home": 0,
-        "pred_away": 4,
-        "points": 0
-      },
-      {
-        "id": 1270,
-        "user_id": 1,
-        "match_id": "679c9c8a5749c4077500e047",
-        "pred_home": 2,
-        "pred_away": 0,
-        "points": 0
-      },
-      {
-        "id": 1271,
-        "user_id": 1,
-        "match_id": "679c9c8a5749c4077500e053",
-        "pred_home": 2,
         "pred_away": 0,
         "points": 0
       }

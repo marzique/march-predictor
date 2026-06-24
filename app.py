@@ -19,6 +19,7 @@ from sync import sync_games, sync_teams
 BASE = Path(__file__).parent
 templates = Jinja2Templates(directory=str(BASE / "templates"))
 SYNC_INTERVAL = 300  # seconds
+ADMINS = {"marzique"}   # usernames allowed to set results manually — edit as needed
 
 
 @asynccontextmanager
@@ -55,6 +56,9 @@ def render(request: Request, name: str, ctx: dict = None, status_code: int = 200
     """Render a Jinja template directly — avoids TemplateResponse signature
     differences between Starlette versions (venv vs ~/.local)."""
     context = {"request": request, **(ctx or {})}
+    if "is_admin" not in context:
+        u = current_user(request)
+        context["is_admin"] = bool(u and u["username"] in ADMINS)
     html = templates.env.get_template(name).render(context)
     return HTMLResponse(html, status_code=status_code)
 
@@ -265,7 +269,7 @@ async def leaderboard(request: Request):
 
 @app.get("/progress", response_class=HTMLResponse)
 async def progress(request: Request):
-    """Cumulative points per user across finished matches (in date order)."""
+    """Line-chart metrics + per-user stats across finished matches. Read-only."""
     user = current_user(request)
     if not user:
         return RedirectResponse("/login", status_code=302)
@@ -273,28 +277,165 @@ async def progress(request: Request):
         matches = conn.execute(
             "SELECT id, home, away FROM matches WHERE finished=1 ORDER BY kickoff, id"
         ).fetchall()
-        users = conn.execute("SELECT id, username FROM users").fetchall()
+        users = conn.execute("SELECT id, username FROM users ORDER BY id").fetchall()
         preds = conn.execute(
             "SELECT user_id, match_id, points FROM predictions").fetchall()
 
+    mids = [m["id"] for m in matches]
+    n = len(mids)
+    # (uid, mid) -> points, only present if the user predicted that match
     pts = {(p["user_id"], p["match_id"]): p["points"] for p in preds}
     labels = ["Start"] + [f'{m["home"][:3].upper()}–{m["away"][:3].upper()}'
                           for m in matches]
+    ROLL = 5   # rolling-average window (matches)
 
-    series = {}     # uid -> (username, cumulative list)
+    # per-user series over the ordered matches
+    udata = {}   # uid -> dict of series + stat fields
     for u in users:
-        run, data = 0, [0]
-        for m in matches:
-            run += pts.get((u["id"], m["id"]), 0)
-            data.append(run)
-        series[u["id"]] = (u["username"], data)
+        uid = u["id"]
+        cum = cum_ex = 0
+        deltas, cum_pts, cum_exact = [], [0], [0]
+        played = correct = exact = best = 0
+        worst = None
+        tiers = {6: 0, 4: 0, 3: 0, 2: 0, 0: 0}
+        streak = cur_streak = 0
+        for mid in mids:
+            has = (uid, mid) in pts
+            p = pts.get((uid, mid), 0)
+            cum += p
+            deltas.append(p)
+            cum_pts.append(cum)
+            if has:
+                played += 1
+                tiers[p if p in tiers else 0] += 1
+                if p >= 2:
+                    correct += 1
+                if p == 6:
+                    exact += 1
+                    cum_ex += 1
+                best = max(best, p)
+                worst = p if worst is None else min(worst, p)
+                cur_streak = cur_streak + 1 if p >= 2 else 0
+                streak = max(streak, cur_streak)
+            else:
+                cur_streak = 0
+            cum_exact.append(cum_ex)
+        # rolling avg points/match aligned to labels (index 0 = Start = 0)
+        roll = [0]
+        for i in range(1, n + 1):
+            window = deltas[max(0, i - ROLL):i]
+            roll.append(round(sum(window) / len(window), 2) if window else 0)
+        udata[uid] = {
+            "uid": uid, "name": u["username"],
+            "points": cum_pts, "exact": cum_exact, "roll": roll,
+            "played": played, "total": cum, "correct": correct, "nexact": exact,
+            "tiers": tiers, "best": best, "worst": worst or 0, "streak": streak,
+        }
 
-    # legend/draw order: highest final total first
-    datasets = [{"label": series[uid][0], "data": series[uid][1]}
-                for uid in sorted(series, key=lambda k: -series[k][1][-1])]
-    chart = {"labels": labels, "datasets": datasets}
+    # rank + gap need cross-user values per step
+    for s in range(n + 1):
+        standing = sorted(users, key=lambda u: -udata[u["id"]]["points"][s])
+        leader = udata[standing[0]["id"]]["points"][s] if users else 0
+        rank = 0
+        for i, u in enumerate(standing):
+            d = udata[u["id"]]
+            if i == 0 or d["points"][s] != udata[standing[i - 1]["id"]]["points"][s]:
+                rank = i + 1
+            d.setdefault("rank", []).append(rank)
+            d.setdefault("gap", []).append(leader - d["points"][s])
+
+    order = sorted(users, key=lambda u: -udata[u["id"]]["total"])
+    ordered = [udata[u["id"]] for u in order]
+
+    chart = {
+        "labels": labels,
+        "users": [{
+            "uid": d["uid"], "name": d["name"], "points": d["points"],
+            "rank": d["rank"], "gap": d["gap"], "roll": d["roll"], "exact": d["exact"],
+        } for d in ordered],
+        "breakdown": {
+            "names": [d["name"] for d in ordered],
+            "uids": [d["uid"] for d in ordered],
+            "tiers": {str(t): [d["tiers"][t] for d in ordered] for t in (6, 4, 3, 2, 0)},
+        },
+    }
+    stats = [{
+        "name": d["name"], "uid": d["uid"], "played": d["played"], "total": d["total"],
+        "avg": round(d["total"] / d["played"], 2) if d["played"] else 0,
+        "acc": round(100 * d["correct"] / d["played"]) if d["played"] else 0,
+        "exact_pct": round(100 * d["nexact"] / d["played"]) if d["played"] else 0,
+        "t6": d["tiers"][6], "t4": d["tiers"][4], "t3": d["tiers"][3],
+        "t2": d["tiers"][2], "t0": d["tiers"][0],
+        "best": d["best"], "worst": d["worst"], "streak": d["streak"],
+    } for d in ordered]
+
     return render(request, "progress.html",
-                  {"user": user, "chart": chart, "has_data": bool(matches)})
+                  {"user": user, "chart": chart, "stats": stats, "has_data": n > 0})
+
+
+# ------------------------------------------------------------------ admin ----
+def _scorers_text(raw):
+    """JSON scorers column -> comma-separated string for the admin input."""
+    return ", ".join(_scorers(raw))
+
+
+@app.get("/admin", response_class=HTMLResponse)
+async def admin_page(request: Request):
+    user = current_user(request)
+    if not user:
+        return RedirectResponse("/login", status_code=302)
+    if user["username"] not in ADMINS:
+        return HTMLResponse("Forbidden", status_code=403)
+    now = datetime.now(timezone.utc).isoformat()
+    with connect() as conn:
+        # only matches that have kicked off (or already have a result) — those need editing
+        rows = conn.execute(
+            "SELECT * FROM matches WHERE kickoff <= ? OR finished = 1 ORDER BY kickoff DESC",
+            (now,)).fetchall()
+    items = [{"m": m,
+              "home_scorers": _scorers_text(m["home_scorers"]),
+              "away_scorers": _scorers_text(m["away_scorers"])} for m in rows]
+    return render(request, "admin.html", {"user": user, "items": items})
+
+
+@app.post("/admin/result/{match_id}")
+async def admin_save(request: Request, match_id: str,
+                     home_score: str = Form(""), away_score: str = Form(""),
+                     home_scorers: str = Form(""), away_scorers: str = Form(""),
+                     action: str = Form("save")):
+    user = current_user(request)
+    if not user or user["username"] not in ADMINS:
+        return HTMLResponse("Forbidden", status_code=403)
+
+    from sync import parse_scorers, recompute_points
+    with connect() as conn:
+        m = conn.execute("SELECT id FROM matches WHERE id=?", (match_id,)).fetchone()
+        if not m:
+            return RedirectResponse("/admin", status_code=302)
+
+        if action == "clear":
+            # hand the match back to the API sync; reset result + points
+            conn.execute(
+                """UPDATE matches SET manual=0, finished=0,
+                   home_score=NULL, away_score=NULL,
+                   home_scorers=NULL, away_scorers=NULL WHERE id=?""", (match_id,))
+            conn.execute("UPDATE predictions SET points=0 WHERE match_id=?", (match_id,))
+            return RedirectResponse("/admin", status_code=302)
+
+        # save a manual result
+        try:
+            hi, ai = int(home_score), int(away_score)
+        except ValueError:
+            return RedirectResponse("/admin", status_code=302)
+        if hi < 0 or ai < 0:
+            return RedirectResponse("/admin", status_code=302)
+        conn.execute(
+            """UPDATE matches
+               SET home_score=?, away_score=?, finished=1, manual=1,
+                   home_scorers=?, away_scorers=? WHERE id=?""",
+            (hi, ai, parse_scorers(home_scorers), parse_scorers(away_scorers), match_id))
+    recompute_points([match_id])
+    return RedirectResponse("/admin", status_code=302)
 
 
 # ------------------------------------------------------------------- auth ----

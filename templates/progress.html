@@ -1,13 +1,70 @@
 {% extends "base.html" %}
 {% block title %}Progress{% endblock %}
+{% block main_class %}wide{% endblock %}
 {% block content %}
-<h1>📈 Points progression</h1>
+<h1>📈 Stats & progression</h1>
 
 {% if not has_data %}
-  <p class="hint">No finished matches yet — the chart fills in as results come in.</p>
+  <p class="hint">No finished matches yet — stats fill in as results come in.</p>
 {% else %}
+
+<div class="card chart-card">
+  <h2>Total points</h2>
+  <div class="chart-wrap"><canvas id="chartPoints"></canvas></div>
+</div>
+
+<div class="card chart-card">
+  <h2>Rank</h2>
+  <div class="chart-wrap"><canvas id="chartRank"></canvas></div>
+</div>
+
+<div class="card chart-card">
+  <h2>Points behind leader</h2>
+  <div class="chart-wrap"><canvas id="chartGap"></canvas></div>
+</div>
+
+<div class="card chart-card">
+  <h2>Form — avg points / match (last 5)</h2>
+  <div class="chart-wrap"><canvas id="chartRoll"></canvas></div>
+</div>
+
+<div class="card chart-card">
+  <h2>Exact scores 🎯 (cumulative)</h2>
+  <div class="chart-wrap"><canvas id="chartExact"></canvas></div>
+</div>
+
+<div class="card chart-card">
+  <h2>Points breakdown</h2>
+  <div class="chart-wrap"><canvas id="chartBreakdown"></canvas></div>
+</div>
+
 <div class="card">
-  <div class="chart-wrap"><canvas id="progressChart"></canvas></div>
+  <h2>Per-user stats</h2>
+  <div class="stats-scroll">
+    <table class="stats">
+      <thead><tr>
+        <th>Player</th><th>Pts</th><th>Played</th><th>Avg</th>
+        <th>Outcome%</th><th>Exact%</th>
+        <th>🎯6</th><th>📏4</th><th>½3</th><th>✓2</th><th>✗0</th>
+        <th>Best</th><th>Worst</th><th>Streak</th>
+      </tr></thead>
+      <tbody>
+      {% for s in stats %}
+        <tr class="{{ 'me-row' if s['name'] == user['username'] else '' }}">
+          <td class="who">{{ s["name"] }}</td>
+          <td><b>{{ s["total"] }}</b></td>
+          <td>{{ s["played"] }}</td>
+          <td>{{ s["avg"] }}</td>
+          <td>{{ s["acc"] }}%</td>
+          <td>{{ s["exact_pct"] }}%</td>
+          <td>{{ s["t6"] }}</td><td>{{ s["t4"] }}</td><td>{{ s["t3"] }}</td>
+          <td>{{ s["t2"] }}</td><td>{{ s["t0"] }}</td>
+          <td>{{ s["best"] }}</td><td>{{ s["worst"] }}</td><td>{{ s["streak"] }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
 </div>
 {% endif %}
 
@@ -15,36 +72,88 @@
 <script>
   var CHART = {{ chart | tojson }};
   (function () {
-    var el = document.getElementById("progressChart");
-    if (!el || !window.Chart) return;
-    var ds = CHART.datasets.map(function (d, i) {
-      var hue = (i * 137.5) % 360;            // golden-angle spread = distinct colors
-      var color = "hsl(" + hue + ",70%,58%)";
-      return {
-        label: d.label, data: d.data,
-        borderColor: color, backgroundColor: color,
-        tension: 0.25, borderWidth: 2,
-        pointRadius: 2, pointHoverRadius: 5
+    if (!window.Chart || !CHART.users) return;
+    var PALETTE = [
+      "#e6194b", "#3cb44b", "#4363d8", "#f58231", "#911eb4",
+      "#42d4f4", "#f032e6", "#bfef45", "#fabed4", "#469990",
+      "#9a6324", "#ffe119"
+    ];
+    var colorFor = function (uid) { return PALETTE[(uid - 1) % PALETTE.length]; };
+    Chart.defaults.color = "#8b909c";
+    Chart.defaults.font.family = "system-ui, sans-serif";
+    var grid = "#2a2e38";
+
+    function lines(field) {
+      return CHART.users.map(function (u) {
+        var c = colorFor(u.uid);
+        return { label: u.name, data: u[field], borderColor: c, backgroundColor: c,
+                 tension: 0.25, borderWidth: 2, pointRadius: 2, pointHoverRadius: 5 };
+      });
+    }
+    function makeLine(id, field, opts) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      var scales = {
+        x: { ticks: { maxRotation: 90, minRotation: 45 }, grid: { color: grid } },
+        y: Object.assign({ grid: { color: grid } }, (opts && opts.y) || {})
       };
-    });
-    new Chart(el, {
-      type: "line",
-      data: { labels: CHART.labels, datasets: ds },
-      options: {
-        responsive: true, maintainAspectRatio: false,
-        interaction: { mode: "index", intersect: false },
-        scales: {
-          y: { beginAtZero: true, title: { display: true, text: "Total points" },
-               ticks: { color: "#8b909c" }, grid: { color: "#2a2e38" } },
-          x: { ticks: { color: "#8b909c", maxRotation: 90, minRotation: 45 },
-               grid: { color: "#23262e" } }
-        },
-        plugins: {
-          legend: { labels: { color: "#e6e8ec", usePointStyle: true } },
-          tooltip: { itemSort: function (a, b) { return b.parsed.y - a.parsed.y; } }
+      new Chart(el, {
+        type: "line",
+        data: { labels: CHART.labels, datasets: lines(field) },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          interaction: { mode: "index", intersect: false },
+          scales: scales,
+          plugins: {
+            legend: { labels: { usePointStyle: true, color: "#e6e8ec" } },
+            tooltip: { itemSort: (opts && opts.sort) || undefined }
+          }
         }
-      }
-    });
+      });
+    }
+
+    var byPts = function (a, b) { return b.parsed.y - a.parsed.y; };
+    var byAsc = function (a, b) { return a.parsed.y - b.parsed.y; };
+
+    makeLine("chartPoints", "points",
+      { y: { beginAtZero: true, title: { display: true, text: "Total points" } }, sort: byPts });
+
+    makeLine("chartRank", "rank",
+      { y: { reverse: true, min: 1, ticks: { stepSize: 1, precision: 0 },
+             title: { display: true, text: "Rank (1 = top)" } }, sort: byAsc });
+
+    makeLine("chartGap", "gap",
+      { y: { beginAtZero: true, title: { display: true, text: "Points behind" } }, sort: byAsc });
+
+    makeLine("chartRoll", "roll",
+      { y: { beginAtZero: true, title: { display: true, text: "Avg pts / match" } }, sort: byPts });
+
+    makeLine("chartExact", "exact",
+      { y: { beginAtZero: true, ticks: { precision: 0 }, title: { display: true, text: "Exact scores" } }, sort: byPts });
+
+    // stacked points-breakdown bar
+    var bEl = document.getElementById("chartBreakdown");
+    if (bEl) {
+      var TIER_COLORS = { "6": "#f5c542", "4": "#4caf50", "3": "#3da9fc", "2": "#26a69a", "0": "#8a4a4a" };
+      var TIER_LABELS = { "6": "Exact (6)", "4": "Goal diff (4)", "3": "One side (3)", "2": "Outcome (2)", "0": "Missed (0)" };
+      var bd = CHART.breakdown;
+      var dsets = ["6", "4", "3", "2", "0"].map(function (t) {
+        return { label: TIER_LABELS[t], data: bd.tiers[t],
+                 backgroundColor: TIER_COLORS[t], stack: "s" };
+      });
+      new Chart(bEl, {
+        type: "bar",
+        data: { labels: bd.names, datasets: dsets },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          scales: {
+            x: { stacked: true, grid: { color: grid } },
+            y: { stacked: true, beginAtZero: true, ticks: { precision: 0 }, grid: { color: grid } }
+          },
+          plugins: { legend: { labels: { color: "#e6e8ec" } } }
+        }
+      });
+    }
   })();
 </script>
 {% endblock %}

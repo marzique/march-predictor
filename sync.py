@@ -160,7 +160,7 @@ async def sync_games() -> dict:
             home_sc = parse_scorers(g.get("home_scorers"))
             away_sc = parse_scorers(g.get("away_scorers"))
 
-            row = conn.execute("SELECT id FROM matches WHERE id=?", (mid,)).fetchone()
+            row = conn.execute("SELECT id, manual FROM matches WHERE id=?", (mid,)).fetchone()
             if row is None:
                 conn.execute(
                     """INSERT INTO matches
@@ -174,6 +174,17 @@ async def sync_games() -> dict:
                      home_sc, away_sc),
                 )
                 new += 1
+            elif row["manual"]:
+                # admin-set result — never overwrite scores/finished/scorers from API
+                conn.execute(
+                    """UPDATE matches
+                       SET home=?, away=?, home_id=?, away_id=?, kickoff=?, grp=?, matchday=?
+                       WHERE id=?""",
+                    (g.get("home_team_name_en", "?"), g.get("away_team_name_en", "?"),
+                     g.get("home_team_id"), g.get("away_team_id"),
+                     kickoff, g.get("group"), g.get("matchday"), mid),
+                )
+                updated += 1
             else:
                 conn.execute(
                     """UPDATE matches
@@ -187,8 +198,8 @@ async def sync_games() -> dict:
                      home_sc, away_sc, mid),
                 )
                 updated += 1
-            if finished and hs is not None and as_ is not None:
-                finished_ids.append(mid)
+                if finished and hs is not None and as_ is not None:
+                    finished_ids.append(mid)
 
     if finished_ids:
         recompute_points(finished_ids)

@@ -25,7 +25,8 @@ CREATE TABLE IF NOT EXISTS matches (
     grp        TEXT,
     matchday   TEXT,
     home_scorers TEXT,                     -- JSON list of "Name 67'"
-    away_scorers TEXT
+    away_scorers TEXT,
+    manual     INTEGER NOT NULL DEFAULT 0  -- 1 = result set by admin, sync must not overwrite
 );
 CREATE TABLE IF NOT EXISTS teams (
     id        TEXT PRIMARY KEY,           -- team id (matches games' home_team_id)
@@ -73,6 +74,8 @@ def _migrate(conn):
     for col in ("home_scorers", "away_scorers"):
         if col not in cols:
             conn.execute(f"ALTER TABLE matches ADD COLUMN {col} TEXT")
+    if "manual" not in cols:
+        conn.execute("ALTER TABLE matches ADD COLUMN manual INTEGER NOT NULL DEFAULT 0")
 
 
 # ---------------------------------------------------------------- scoring ----

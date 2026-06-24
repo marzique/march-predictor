@@ -284,8 +284,28 @@ h1 {
 .who-line.me { color: var(--accent); font-weight: 700; }
 .tip .tip-title:not(:first-child) { margin-top: 8px; }
 
-/* progression chart */
-.chart-wrap { position: relative; height: 460px; width: 100%; }
+/* admin results page */
+.admin-row { display: flex; flex-direction: column; gap: 10px; }
+.admin-teams { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.tag-manual { background: var(--accent); color: #08121c; font-weight: 700;
+  border-radius: 6px; padding: 1px 7px; font-size: 11px; }
+.admin-form { display: flex; flex-direction: column; gap: 8px; }
+.admin-line { display: flex; align-items: center; gap: 10px; }
+.admin-line input { width: 70px; text-align: center; font-size: 18px; }
+.admin-btns { display: flex; gap: 10px; }
+
+/* progression charts */
+.chart-card h2 { font-size: 15px; margin: 0 0 12px; }
+.chart-wrap { position: relative; height: 380px; width: 100%; }
+
+/* per-user stats table */
+.stats-scroll { overflow-x: auto; }
+.stats { border-collapse: collapse; width: 100%; font-size: 13px; }
+.stats th, .stats td { padding: 7px 8px; text-align: center; white-space: nowrap;
+  border-bottom: 1px solid var(--line); }
+.stats th { color: var(--muted); font-weight: 500; font-size: 12px; }
+.stats td.who, .stats th:first-child { text-align: left; }
+.stats .me-row { background: rgba(61,169,252,0.10); }
 
 /* per-match comments */
 .comments { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--line); }
