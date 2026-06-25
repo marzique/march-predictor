@@ -373,6 +373,59 @@ async def progress(request: Request):
                   {"user": user, "chart": chart, "stats": stats, "has_data": n > 0})
 
 
+@app.get("/insights", response_class=HTMLResponse)
+async def insights(request: Request):
+    """Per-match & per-team prediction difficulty (how often the crowd got it right)."""
+    user = current_user(request)
+    if not user:
+        return RedirectResponse("/login", status_code=302)
+    with connect() as conn:
+        matches = conn.execute(
+            """SELECT id, home, away, home_id, away_id, home_score, away_score
+               FROM matches WHERE finished=1 ORDER BY kickoff""").fetchall()
+        flags = {t["id"]: t["flag"] for t in conn.execute("SELECT id, flag FROM teams")}
+        prows = conn.execute("SELECT match_id, points FROM predictions").fetchall()
+
+    fin = {m["id"] for m in matches}
+    by_match = {}
+    for p in prows:
+        if p["match_id"] in fin:
+            by_match.setdefault(p["match_id"], []).append(p["points"])
+
+    match_stats, team_agg = [], {}
+    for m in matches:
+        pl = by_match.get(m["id"], [])
+        total = len(pl)
+        correct = sum(1 for x in pl if x >= 2)
+        exact = sum(1 for x in pl if x == 6)
+        if total:
+            match_stats.append({
+                "label": f'{m["home"]} {m["home_score"]}:{m["away_score"]} {m["away"]}',
+                "total": total, "correct": correct, "exact": exact,
+                "acc": round(100 * correct / total)})
+        for tid, name in ((m["home_id"], m["home"]), (m["away_id"], m["away"])):
+            a = team_agg.setdefault(tid, {"name": name, "flag": flags.get(tid),
+                                          "correct": 0, "total": 0, "exact": 0, "matches": 0})
+            a["name"] = name
+            a["correct"] += correct
+            a["total"] += total
+            a["exact"] += exact
+            a["matches"] += 1
+
+    teams = [{"name": a["name"], "flag": a["flag"], "matches": a["matches"],
+              "preds": a["total"],
+              "acc": round(100 * a["correct"] / a["total"]) if a["total"] else 0,
+              "exact_pct": round(100 * a["exact"] / a["total"]) if a["total"] else 0}
+             for a in team_agg.values() if a["total"] > 0]
+    teams.sort(key=lambda x: (x["acc"], -x["preds"]))       # hardest first
+    match_stats.sort(key=lambda x: (x["acc"], -x["total"]))  # hardest first
+
+    chart = {"labels": [t["name"] for t in teams], "acc": [t["acc"] for t in teams]}
+    return render(request, "insights.html",
+                  {"user": user, "teams": teams, "matches": match_stats,
+                   "chart": chart, "has_data": bool(teams)})
+
+
 # ------------------------------------------------------------------ admin ----
 def _scorers_text(raw):
     """JSON scorers column -> comma-separated string for the admin input."""

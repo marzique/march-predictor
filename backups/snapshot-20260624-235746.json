@@ -1,5 +1,5 @@
 {
-  "created_at": "2026-06-25T02:37:52",
+  "created_at": "2026-06-24T23:57:46",
   "label": "manual",
   "counts": {
     "users": 6,
@@ -1119,7 +1119,7 @@
         "grp": "C",
         "matchday": "3",
         "home_scorers": "[]",
-        "away_scorers": "[\"Vinícius Júnior 7'\", \"Vinícius Júnior 45+3'\", \"Matheus Cunha 60'\"]",
+        "away_scorers": "[]",
         "manual": 0
       },
       {
@@ -1134,8 +1134,8 @@
         "finished": 0,
         "grp": "C",
         "matchday": "3",
-        "home_scorers": "[\"Achraf Hakimi 39'\", \"Asmaail Saibari 45+1'\"]",
-        "away_scorers": "[\"Yassine Bounou 10'\", \"Wilson Isidor 43'\"]",
+        "home_scorers": "[]",
+        "away_scorers": "[]",
         "manual": 0
       },
       {
@@ -1177,9 +1177,9 @@
         "home_id": "6",
         "away_id": "7",
         "kickoff": "2026-06-24T19:00:00+00:00",
-        "home_score": 3,
-        "away_score": 1,
-        "finished": 1,
+        "home_score": null,
+        "away_score": null,
+        "finished": 0,
         "grp": "B",
         "matchday": "3",
         "home_scorers": "[\"Karim Alaibgvvich 29'\", \"Abvnad 34'\", \"Armin Mhmich 80'\"]",
@@ -1193,9 +1193,9 @@
         "home_id": "8",
         "away_id": "5",
         "kickoff": "2026-06-24T19:00:00+00:00",
-        "home_score": 2,
-        "away_score": 1,
-        "finished": 1,
+        "home_score": null,
+        "away_score": null,
+        "finished": 0,
         "grp": "B",
         "matchday": "3",
         "home_scorers": "[\"Rubén Vargas 46'\", \"Jvhan Mnzambi 57'\"]",
@@ -1493,9 +1493,9 @@
       {
         "id": "679c9c8a5749c4077500e073",
         "home": "?",
-        "away": "Canada",
+        "away": "?",
         "home_id": "0",
-        "away_id": "5",
+        "away_id": "0",
         "kickoff": "2026-06-28T19:00:00+00:00",
         "home_score": null,
         "away_score": null,
@@ -1684,9 +1684,9 @@
       },
       {
         "id": "679c9c8a5749c4077500e07f",
-        "home": "Switzerland",
+        "home": "?",
         "away": "?",
-        "home_id": "8",
+        "home_id": "0",
         "away_id": "0",
         "kickoff": "2026-07-03T03:00:00+00:00",
         "home_score": null,
@@ -1700,9 +1700,9 @@
       },
       {
         "id": "679c9c8a5749c4077500e080",
-        "home": "Argentina",
+        "home": "?",
         "away": "?",
-        "home_id": "37",
+        "home_id": "0",
         "away_id": "0",
         "kickoff": "2026-07-03T22:00:00+00:00",
         "home_score": null,
@@ -4106,7 +4106,7 @@
         "match_id": "679c9c8a5749c4077500e053",
         "pred_home": 2,
         "pred_away": 0,
-        "points": 4
+        "points": 0
       },
       {
         "id": 995,
@@ -4114,7 +4114,7 @@
         "match_id": "679c9c8a5749c4077500e054",
         "pred_home": 2,
         "pred_away": 1,
-        "points": 6
+        "points": 0
       },
       {
         "id": 996,
@@ -4314,7 +4314,7 @@
         "match_id": "679c9c8a5749c4077500e053",
         "pred_home": 1,
         "pred_away": 0,
-        "points": 2
+        "points": 0
       },
       {
         "id": 1093,
@@ -4322,7 +4322,7 @@
         "match_id": "679c9c8a5749c4077500e054",
         "pred_home": 3,
         "pred_away": 2,
-        "points": 4
+        "points": 0
       },
       {
         "id": 1100,
@@ -4346,7 +4346,7 @@
         "match_id": "679c9c8a5749c4077500e053",
         "pred_home": 1,
         "pred_away": 0,
-        "points": 2
+        "points": 0
       },
       {
         "id": 1103,
@@ -4458,7 +4458,7 @@
         "match_id": "679c9c8a5749c4077500e053",
         "pred_home": 2,
         "pred_away": 0,
-        "points": 4
+        "points": 0
       },
       {
         "id": 1122,
@@ -4602,7 +4602,7 @@
         "match_id": "679c9c8a5749c4077500e053",
         "pred_home": 2,
         "pred_away": 1,
-        "points": 3
+        "points": 0
       },
       {
         "id": 1172,
@@ -4874,7 +4874,7 @@
         "match_id": "679c9c8a5749c4077500e053",
         "pred_home": 2,
         "pred_away": 0,
-        "points": 4
+        "points": 0
       },
       {
         "id": 1273,
@@ -4882,7 +4882,7 @@
         "match_id": "679c9c8a5749c4077500e054",
         "pred_home": 2,
         "pred_away": 1,
-        "points": 6
+        "points": 0
       },
       {
         "id": 1274,

@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: march-predictor
+    runtime: python
+    plan: starter                # required for a persistent disk (free tier wipes data)
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: DATA_DIR
+        value: /var/data         # the mounted disk below
+      - key: SECRET_KEY
+        generateValue: true       # stable session key, generated once
+      - key: PYTHON_VERSION
+        value: "3.12"
+    disk:
+      name: data
+      mountPath: /var/data        # data.db + backups/ persist here across deploys
+      sizeGB: 1

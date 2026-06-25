@@ -306,6 +306,8 @@ h1 {
 .stats th { color: var(--muted); font-weight: 500; font-size: 12px; }
 .stats td.who, .stats th:first-child { text-align: left; }
 .stats .me-row { background: rgba(61,169,252,0.10); }
+.mini-flag { width: 22px; height: auto; border-radius: 3px; vertical-align: middle;
+  margin-right: 6px; box-shadow: 0 0 0 1px var(--line); }
 
 /* per-match comments */
 .comments { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--line); }

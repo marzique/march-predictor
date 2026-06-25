@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block title %}Insights{% endblock %}
+{% block main_class %}wide{% endblock %}
+{% block content %}
+<h1>🔎 Prediction difficulty</h1>
+<p class="hint" style="text-align:left;">
+  How often the group got the <b>outcome</b> right (win/draw). Low % = hard to predict.
+</p>
+
+{% if not has_data %}
+  <p class="hint">No finished matches with predictions yet.</p>
+{% else %}
+
+<div class="card chart-card">
+  <h2>Hardest teams to predict</h2>
+  <div class="chart-wrap" style="height: {{ teams|length * 26 + 50 }}px;">
+    <canvas id="teamChart"></canvas>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Teams</h2>
+  <div class="stats-scroll">
+    <table class="stats">
+      <thead><tr><th>Team</th><th>Matches</th><th>Predictions</th><th>Outcome%</th><th>Exact%</th></tr></thead>
+      <tbody>
+      {% for t in teams %}
+        <tr>
+          <td class="who">
+            {% if t["flag"] %}<img class="mini-flag" src="{{ t['flag'] }}" alt="">{% endif %}
+            {{ t["name"] }}
+          </td>
+          <td>{{ t["matches"] }}</td>
+          <td>{{ t["preds"] }}</td>
+          <td><b>{{ t["acc"] }}%</b></td>
+          <td>{{ t["exact_pct"] }}%</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Hardest matches</h2>
+  <div class="stats-scroll">
+    <table class="stats">
+      <thead><tr><th>Match (result)</th><th>Predictions</th><th>Correct</th><th>Outcome%</th><th>Exact</th></tr></thead>
+      <tbody>
+      {% for m in matches %}
+        <tr>
+          <td class="who">{{ m["label"] }}</td>
+          <td>{{ m["total"] }}</td>
+          <td>{{ m["correct"] }}</td>
+          <td><b>{{ m["acc"] }}%</b></td>
+          <td>{{ m["exact"] }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endif %}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+  var DATA = {{ chart | tojson }};
+  (function () {
+    var el = document.getElementById("teamChart");
+    if (!el || !window.Chart || !DATA.labels) return;
+    var colors = DATA.acc.map(function (a) { return "hsl(" + (a * 1.2) + ",65%,50%)"; }); // red→green
+    new Chart(el, {
+      type: "bar",
+      data: { labels: DATA.labels,
+              datasets: [{ label: "Outcome %", data: DATA.acc, backgroundColor: colors }] },
+      options: {
+        indexAxis: "y", responsive: true, maintainAspectRatio: false,
+        scales: {
+          x: { beginAtZero: true, max: 100, ticks: { color: "#8b909c" }, grid: { color: "#2a2e38" } },
+          y: { ticks: { color: "#e6e8ec", autoSkip: false, font: { size: 11 } }, grid: { display: false } }
+        },
+        plugins: { legend: { display: false } }
+      }
+    });
+  })();
+</script>
+{% endblock %}
