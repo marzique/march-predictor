@@ -1,11 +1,11 @@
 {
-  "created_at": "2026-06-27T15:45:09",
+  "created_at": "2026-06-25T22:23:15",
   "label": "manual",
   "counts": {
     "users": 6,
     "teams": 48,
     "matches": 104,
-    "predictions": 435,
+    "predictions": 401,
     "comments": 0
   },
   "tables": {
@@ -1209,13 +1209,13 @@
         "home_id": "18",
         "away_id": "19",
         "kickoff": "2026-06-25T20:00:00+00:00",
-        "home_score": 0,
-        "away_score": 2,
-        "finished": 1,
+        "home_score": null,
+        "away_score": null,
+        "finished": 0,
         "grp": "E",
         "matchday": "3",
         "home_scorers": "[]",
-        "away_scorers": "[\"Nikvlas Ph Ph 7'\", \"Nikvlas Ph Ph 64'\"]",
+        "away_scorers": "[]",
         "manual": 0
       },
       {
@@ -1225,13 +1225,13 @@
         "home_id": "20",
         "away_id": "17",
         "kickoff": "2026-06-25T20:00:00+00:00",
-        "home_score": 2,
-        "away_score": 1,
-        "finished": 1,
+        "home_score": null,
+        "away_score": null,
+        "finished": 0,
         "grp": "E",
         "matchday": "3",
-        "home_scorers": "[\"Nilsvn Angvlv 9'\", \"Gvnzalv Plata 77'\"]",
-        "away_scorers": "[\"Leroy Sané 2'\"]",
+        "home_scorers": "[]",
+        "away_scorers": "[]",
         "manual": 0
       },
       {
@@ -1241,9 +1241,9 @@
         "home_id": "14",
         "away_id": "15",
         "kickoff": "2026-06-26T02:00:00+00:00",
-        "home_score": 0,
-        "away_score": 0,
-        "finished": 1,
+        "home_score": null,
+        "away_score": null,
+        "finished": 0,
         "grp": "D",
         "matchday": "3",
         "home_scorers": "[]",
@@ -1257,13 +1257,13 @@
         "home_id": "16",
         "away_id": "13",
         "kickoff": "2026-06-26T02:00:00+00:00",
-        "home_score": 3,
-        "away_score": 2,
-        "finished": 1,
+        "home_score": null,
+        "away_score": null,
+        "finished": 0,
         "grp": "D",
         "matchday": "3",
-        "home_scorers": "[\"Arda Güler 10'\", \"Baris Alpr Ailmaz 31'\", \"Kan Aihan 90+8'\"]",
-        "away_scorers": "[\"Auston Trusty 3'\", \"Sebastian Berhalter 49'\"]",
+        "home_scorers": "[]",
+        "away_scorers": "[]",
         "manual": 0
       },
       {
@@ -1273,13 +1273,13 @@
         "home_id": "22",
         "away_id": "23",
         "kickoff": "2026-06-25T23:00:00+00:00",
-        "home_score": 1,
-        "away_score": 1,
-        "finished": 1,
+        "home_score": null,
+        "away_score": null,
+        "finished": 0,
         "grp": "F",
         "matchday": "3",
-        "home_scorers": "[\"Daizen Maeda 56'\"]",
-        "away_scorers": "[\"Anthony Elanga 62'\"]",
+        "home_scorers": "[]",
+        "away_scorers": "[]",
         "manual": 0
       },
       {
@@ -1289,13 +1289,13 @@
         "home_id": "24",
         "away_id": "21",
         "kickoff": "2026-06-25T23:00:00+00:00",
-        "home_score": 1,
-        "away_score": 3,
-        "finished": 1,
+        "home_score": null,
+        "away_score": null,
+        "finished": 0,
         "grp": "F",
         "matchday": "3",
-        "home_scorers": "[\"Hazm Mstvri 54'\"]",
-        "away_scorers": "[\"Alis Skhiri 3'\", \"Brian Brobbey 7'\", \"Ian Fn Hkh 62'\"]",
+        "home_scorers": "[]",
+        "away_scorers": "[]",
         "manual": 0
       },
       {
@@ -1305,12 +1305,12 @@
         "home_id": "34",
         "away_id": "35",
         "kickoff": "2026-06-26T19:00:00+00:00",
-        "home_score": 5,
-        "away_score": 0,
-        "finished": 1,
+        "home_score": null,
+        "away_score": null,
+        "finished": 0,
         "grp": "I",
         "matchday": "3",
-        "home_scorers": "[\"Habib Diarra 4'\", \"Ismaïla Sarr 56'\", \"Paph Gviih 59'\", \"Paph Gviih 71'\", \"Ailman Andiaih 82'\"]",
+        "home_scorers": "[]",
         "away_scorers": "[]",
         "manual": 0
       },
@@ -1321,13 +1321,13 @@
         "home_id": "36",
         "away_id": "33",
         "kickoff": "2026-06-26T19:00:00+00:00",
-        "home_score": 1,
-        "away_score": 4,
-        "finished": 1,
+        "home_score": null,
+        "away_score": null,
+        "finished": 0,
         "grp": "I",
         "matchday": "3",
-        "home_scorers": "[\"Thelo Aasgaard 21'\"]",
-        "away_scorers": "[\"Ousmane Dembélé 7'\", \"Ousmane Dembélé 20'\", \"Ousmane Dembélé 32'\", \"Désiré Doué 90+4'\"]",
+        "home_scorers": "[]",
+        "away_scorers": "[]",
         "manual": 0
       },
       {
@@ -1337,13 +1337,13 @@
         "home_id": "26",
         "away_id": "27",
         "kickoff": "2026-06-27T03:00:00+00:00",
-        "home_score": 1,
-        "away_score": 1,
-        "finished": 1,
+        "home_score": null,
+        "away_score": null,
+        "finished": 0,
         "grp": "G",
         "matchday": "3",
-        "home_scorers": "[\"Mahmoud Saber 5'\"]",
-        "away_scorers": "[\"Ramin Rezaeian 14'\"]",
+        "home_scorers": "[]",
+        "away_scorers": "[]",
         "manual": 0
       },
       {
@@ -1353,13 +1353,13 @@
         "home_id": "28",
         "away_id": "25",
         "kickoff": "2026-06-27T03:00:00+00:00",
-        "home_score": 1,
-        "away_score": 5,
-        "finished": 1,
+        "home_score": null,
+        "away_score": null,
+        "finished": 0,
         "grp": "G",
         "matchday": "3",
-        "home_scorers": "[\"Ali Jast 84'\"]",
-        "away_scorers": "[\"Leandro Trossard 28'\", \"Leandro Trossard 50'\", \"Kevin De Bruyne 66'\", \"Romelu Lukaku 86'\", \"Alexis Saelemaekers 90+4'\"]",
+        "home_scorers": "[]",
+        "away_scorers": "[]",
         "manual": 0
       },
       {
@@ -1369,9 +1369,9 @@
         "home_id": "30",
         "away_id": "31",
         "kickoff": "2026-06-27T00:00:00+00:00",
-        "home_score": 0,
-        "away_score": 0,
-        "finished": 1,
+        "home_score": null,
+        "away_score": null,
+        "finished": 0,
         "grp": "H",
         "matchday": "3",
         "home_scorers": "[]",
@@ -1385,13 +1385,13 @@
         "home_id": "32",
         "away_id": "29",
         "kickoff": "2026-06-27T00:00:00+00:00",
-        "home_score": 0,
-        "away_score": 1,
-        "finished": 1,
+        "home_score": null,
+        "away_score": null,
+        "finished": 0,
         "grp": "H",
         "matchday": "3",
         "home_scorers": "[]",
-        "away_scorers": "[\"Álex Baena 42'\"]",
+        "away_scorers": "[]",
         "manual": 0
       },
       {
@@ -1509,9 +1509,9 @@
       {
         "id": "679c9c8a5749c4077500e074",
         "home": "Germany",
-        "away": "Paraguay",
+        "away": "?",
         "home_id": "17",
-        "away_id": "14",
+        "away_id": "0",
         "kickoff": "2026-06-29T20:30:00+00:00",
         "home_score": null,
         "away_score": null,
@@ -1524,9 +1524,9 @@
       },
       {
         "id": "679c9c8a5749c4077500e075",
-        "home": "Netherlands",
+        "home": "?",
         "away": "Morocco",
-        "home_id": "21",
+        "home_id": "0",
         "away_id": "10",
         "kickoff": "2026-06-30T01:00:00+00:00",
         "home_score": null,
@@ -1541,9 +1541,9 @@
       {
         "id": "679c9c8a5749c4077500e076",
         "home": "Brazil",
-        "away": "Japan",
+        "away": "?",
         "home_id": "9",
-        "away_id": "22",
+        "away_id": "0",
         "kickoff": "2026-06-29T17:00:00+00:00",
         "home_score": null,
         "away_score": null,
@@ -1556,9 +1556,9 @@
       },
       {
         "id": "679c9c8a5749c4077500e077",
-        "home": "France",
+        "home": "?",
         "away": "?",
-        "home_id": "33",
+        "home_id": "0",
         "away_id": "0",
         "kickoff": "2026-06-30T21:00:00+00:00",
         "home_score": null,
@@ -1572,10 +1572,10 @@
       },
       {
         "id": "679c9c8a5749c4077500e078",
-        "home": "Ivory Coast",
-        "away": "Norway",
-        "home_id": "19",
-        "away_id": "36",
+        "home": "?",
+        "away": "?",
+        "home_id": "0",
+        "away_id": "0",
         "kickoff": "2026-06-30T17:00:00+00:00",
         "home_score": null,
         "away_score": null,
@@ -1604,9 +1604,9 @@
       },
       {
         "id": "679c9c8a5749c4077500e07a",
-        "home": "Belgium",
+        "home": "?",
         "away": "?",
-        "home_id": "25",
+        "home_id": "0",
         "away_id": "0",
         "kickoff": "2026-07-01T16:00:00+00:00",
         "home_score": null,
@@ -1621,9 +1621,9 @@
       {
         "id": "679c9c8a5749c4077500e07b",
         "home": "United States",
-        "away": "Bosnia and Herzegovina",
+        "away": "?",
         "home_id": "13",
-        "away_id": "6",
+        "away_id": "0",
         "kickoff": "2026-07-02T00:00:00+00:00",
         "home_score": null,
         "away_score": null,
@@ -1701,9 +1701,9 @@
       {
         "id": "679c9c8a5749c4077500e080",
         "home": "Argentina",
-        "away": "Cape Verde",
+        "away": "?",
         "home_id": "37",
-        "away_id": "30",
+        "away_id": "0",
         "kickoff": "2026-07-03T22:00:00+00:00",
         "home_score": null,
         "away_score": null,
@@ -1732,10 +1732,10 @@
       },
       {
         "id": "679c9c8a5749c4077500e082",
-        "home": "Australia",
-        "away": "Egypt",
-        "home_id": "15",
-        "away_id": "26",
+        "home": "?",
+        "away": "?",
+        "home_id": "0",
+        "away_id": "0",
         "kickoff": "2026-07-03T18:00:00+00:00",
         "home_score": null,
         "away_score": null,
@@ -4154,7 +4154,7 @@
         "match_id": "679c9c8a5749c4077500e055",
         "pred_home": 0,
         "pred_away": 2,
-        "points": 6
+        "points": 0
       },
       {
         "id": 1001,
@@ -4170,7 +4170,7 @@
         "match_id": "679c9c8a5749c4077500e059",
         "pred_home": 2,
         "pred_away": 2,
-        "points": 4
+        "points": 0
       },
       {
         "id": 1013,
@@ -4266,7 +4266,7 @@
         "match_id": "679c9c8a5749c4077500e060",
         "pred_home": 0,
         "pred_away": 3,
-        "points": 3
+        "points": 0
       },
       {
         "id": 1082,
@@ -4274,7 +4274,7 @@
         "match_id": "679c9c8a5749c4077500e057",
         "pred_home": 1,
         "pred_away": 1,
-        "points": 4
+        "points": 0
       },
       {
         "id": 1083,
@@ -4394,7 +4394,7 @@
         "match_id": "679c9c8a5749c4077500e055",
         "pred_home": 1,
         "pred_away": 2,
-        "points": 3
+        "points": 0
       },
       {
         "id": 1109,
@@ -4410,7 +4410,7 @@
         "match_id": "679c9c8a5749c4077500e059",
         "pred_home": 1,
         "pred_away": 1,
-        "points": 6
+        "points": 0
       },
       {
         "id": 1111,
@@ -4418,7 +4418,7 @@
         "match_id": "679c9c8a5749c4077500e060",
         "pred_home": 1,
         "pred_away": 2,
-        "points": 3
+        "points": 0
       },
       {
         "id": 1112,
@@ -4426,7 +4426,7 @@
         "match_id": "679c9c8a5749c4077500e057",
         "pred_home": 1,
         "pred_away": 1,
-        "points": 4
+        "points": 0
       },
       {
         "id": 1113,
@@ -4506,7 +4506,7 @@
         "match_id": "679c9c8a5749c4077500e055",
         "pred_home": 0,
         "pred_away": 2,
-        "points": 6
+        "points": 0
       },
       {
         "id": 1128,
@@ -4530,7 +4530,7 @@
         "match_id": "679c9c8a5749c4077500e060",
         "pred_home": 0,
         "pred_away": 2,
-        "points": 4
+        "points": 0
       },
       {
         "id": 1131,
@@ -4554,7 +4554,7 @@
         "match_id": "679c9c8a5749c4077500e061",
         "pred_home": 2,
         "pred_away": 0,
-        "points": 3
+        "points": 0
       },
       {
         "id": 1134,
@@ -4562,7 +4562,7 @@
         "match_id": "679c9c8a5749c4077500e062",
         "pred_home": 1,
         "pred_away": 3,
-        "points": 3
+        "points": 0
       },
       {
         "id": 1136,
@@ -4650,7 +4650,7 @@
         "match_id": "679c9c8a5749c4077500e055",
         "pred_home": 1,
         "pred_away": 3,
-        "points": 4
+        "points": 0
       },
       {
         "id": 1178,
@@ -4722,7 +4722,7 @@
         "match_id": "679c9c8a5749c4077500e055",
         "pred_home": 0,
         "pred_away": 3,
-        "points": 3
+        "points": 0
       },
       {
         "id": 1194,
@@ -4746,7 +4746,7 @@
         "match_id": "679c9c8a5749c4077500e060",
         "pred_home": 0,
         "pred_away": 3,
-        "points": 3
+        "points": 0
       },
       {
         "id": 1197,
@@ -4770,7 +4770,7 @@
         "match_id": "679c9c8a5749c4077500e061",
         "pred_home": 3,
         "pred_away": 0,
-        "points": 3
+        "points": 0
       },
       {
         "id": 1200,
@@ -4778,7 +4778,7 @@
         "match_id": "679c9c8a5749c4077500e062",
         "pred_home": 2,
         "pred_away": 3,
-        "points": 2
+        "points": 0
       },
       {
         "id": 1201,
@@ -4794,7 +4794,7 @@
         "match_id": "679c9c8a5749c4077500e066",
         "pred_home": 1,
         "pred_away": 3,
-        "points": 2
+        "points": 0
       },
       {
         "id": 1203,
@@ -4810,14 +4810,14 @@
         "match_id": "679c9c8a5749c4077500e064",
         "pred_home": 0,
         "pred_away": 2,
-        "points": 2
+        "points": 0
       },
       {
         "id": 1205,
         "user_id": 3,
         "match_id": "679c9c8a5749c4077500e067",
         "pred_home": 0,
-        "pred_away": 2,
+        "pred_away": 3,
         "points": 0
       },
       {
@@ -4841,7 +4841,7 @@
         "user_id": 3,
         "match_id": "679c9c8a5749c4077500e072",
         "pred_home": 2,
-        "pred_away": 1,
+        "pred_away": 0,
         "points": 0
       },
       {
@@ -4921,8 +4921,8 @@
         "user_id": 6,
         "match_id": "679c9c8a5749c4077500e061",
         "pred_home": 2,
-        "pred_away": 1,
-        "points": 2
+        "pred_away": 0,
+        "points": 0
       },
       {
         "id": 1307,
@@ -4936,9 +4936,9 @@
         "id": 1308,
         "user_id": 6,
         "match_id": "679c9c8a5749c4077500e065",
-        "pred_home": 1,
-        "pred_away": 1,
-        "points": 4
+        "pred_home": 2,
+        "pred_away": 2,
+        "points": 0
       },
       {
         "id": 1309,
@@ -4946,14 +4946,14 @@
         "match_id": "679c9c8a5749c4077500e066",
         "pred_home": 1,
         "pred_away": 2,
-        "points": 4
+        "points": 0
       },
       {
         "id": 1310,
         "user_id": 6,
         "match_id": "679c9c8a5749c4077500e063",
-        "pred_home": 2,
-        "pred_away": 1,
+        "pred_home": 3,
+        "pred_away": 0,
         "points": 0
       },
       {
@@ -4962,7 +4962,7 @@
         "match_id": "679c9c8a5749c4077500e064",
         "pred_home": 0,
         "pred_away": 1,
-        "points": 2
+        "points": 0
       },
       {
         "id": 1320,
@@ -4978,7 +4978,7 @@
         "match_id": "679c9c8a5749c4077500e066",
         "pred_home": 1,
         "pred_away": 3,
-        "points": 2
+        "points": 0
       },
       {
         "id": 1322,
@@ -4994,7 +4994,7 @@
         "match_id": "679c9c8a5749c4077500e064",
         "pred_home": 0,
         "pred_away": 1,
-        "points": 2
+        "points": 0
       },
       {
         "id": 1324,
@@ -5066,7 +5066,7 @@
         "match_id": "679c9c8a5749c4077500e060",
         "pred_home": 0,
         "pred_away": 3,
-        "points": 3
+        "points": 0
       },
       {
         "id": 1335,
@@ -5090,7 +5090,7 @@
         "match_id": "679c9c8a5749c4077500e061",
         "pred_home": 2,
         "pred_away": 0,
-        "points": 3
+        "points": 0
       },
       {
         "id": 1338,
@@ -5098,7 +5098,7 @@
         "match_id": "679c9c8a5749c4077500e062",
         "pred_home": 1,
         "pred_away": 2,
-        "points": 3
+        "points": 0
       },
       {
         "id": 1339,
@@ -5114,7 +5114,7 @@
         "match_id": "679c9c8a5749c4077500e066",
         "pred_home": 1,
         "pred_away": 3,
-        "points": 2
+        "points": 0
       },
       {
         "id": 1341,
@@ -5130,7 +5130,7 @@
         "match_id": "679c9c8a5749c4077500e064",
         "pred_home": 0,
         "pred_away": 2,
-        "points": 2
+        "points": 0
       },
       {
         "id": 1343,
@@ -5186,7 +5186,7 @@
         "match_id": "679c9c8a5749c4077500e055",
         "pred_home": 0,
         "pred_away": 2,
-        "points": 6
+        "points": 0
       },
       {
         "id": 1350,
@@ -5200,288 +5200,16 @@
         "id": 1351,
         "user_id": 1,
         "match_id": "679c9c8a5749c4077500e059",
-        "pred_home": 2,
+        "pred_home": 1,
         "pred_away": 2,
-        "points": 4
+        "points": 0
       },
       {
         "id": 1352,
         "user_id": 1,
         "match_id": "679c9c8a5749c4077500e060",
         "pred_home": 0,
-        "pred_away": 3,
-        "points": 3
-      },
-      {
-        "id": 1357,
-        "user_id": 1,
-        "match_id": "679c9c8a5749c4077500e057",
-        "pred_home": 1,
         "pred_away": 2,
-        "points": 0
-      },
-      {
-        "id": 1358,
-        "user_id": 1,
-        "match_id": "679c9c8a5749c4077500e058",
-        "pred_home": 0,
-        "pred_away": 2,
-        "points": 0
-      },
-      {
-        "id": 1363,
-        "user_id": 1,
-        "match_id": "679c9c8a5749c4077500e061",
-        "pred_home": 1,
-        "pred_away": 0,
-        "points": 3
-      },
-      {
-        "id": 1364,
-        "user_id": 1,
-        "match_id": "679c9c8a5749c4077500e062",
-        "pred_home": 1,
-        "pred_away": 3,
-        "points": 3
-      },
-      {
-        "id": 1365,
-        "user_id": 1,
-        "match_id": "679c9c8a5749c4077500e065",
-        "pred_home": 2,
-        "pred_away": 0,
-        "points": 0
-      },
-      {
-        "id": 1366,
-        "user_id": 1,
-        "match_id": "679c9c8a5749c4077500e066",
-        "pred_home": 0,
-        "pred_away": 2,
-        "points": 3
-      },
-      {
-        "id": 1367,
-        "user_id": 1,
-        "match_id": "679c9c8a5749c4077500e063",
-        "pred_home": 2,
-        "pred_away": 1,
-        "points": 0
-      },
-      {
-        "id": 1368,
-        "user_id": 1,
-        "match_id": "679c9c8a5749c4077500e064",
-        "pred_home": 1,
-        "pred_away": 2,
-        "points": 3
-      },
-      {
-        "id": 1381,
-        "user_id": 3,
-        "match_id": "679c9c8a5749c4077500e073",
-        "pred_home": 0,
-        "pred_away": 2,
-        "points": 0
-      },
-      {
-        "id": 1388,
-        "user_id": 2,
-        "match_id": "679c9c8a5749c4077500e061",
-        "pred_home": 2,
-        "pred_away": 0,
-        "points": 3
-      },
-      {
-        "id": 1389,
-        "user_id": 2,
-        "match_id": "679c9c8a5749c4077500e062",
-        "pred_home": 1,
-        "pred_away": 2,
-        "points": 3
-      },
-      {
-        "id": 1390,
-        "user_id": 2,
-        "match_id": "679c9c8a5749c4077500e065",
-        "pred_home": 1,
-        "pred_away": 1,
-        "points": 4
-      },
-      {
-        "id": 1391,
-        "user_id": 2,
-        "match_id": "679c9c8a5749c4077500e066",
-        "pred_home": 1,
-        "pred_away": 2,
-        "points": 4
-      },
-      {
-        "id": 1392,
-        "user_id": 2,
-        "match_id": "679c9c8a5749c4077500e063",
-        "pred_home": 2,
-        "pred_away": 1,
-        "points": 0
-      },
-      {
-        "id": 1393,
-        "user_id": 2,
-        "match_id": "679c9c8a5749c4077500e064",
-        "pred_home": 1,
-        "pred_away": 3,
-        "points": 3
-      },
-      {
-        "id": 1394,
-        "user_id": 2,
-        "match_id": "679c9c8a5749c4077500e067",
-        "pred_home": 0,
-        "pred_away": 3,
-        "points": 0
-      },
-      {
-        "id": 1395,
-        "user_id": 2,
-        "match_id": "679c9c8a5749c4077500e068",
-        "pred_home": 2,
-        "pred_away": 1,
-        "points": 0
-      },
-      {
-        "id": 1396,
-        "user_id": 2,
-        "match_id": "679c9c8a5749c4077500e071",
-        "pred_home": 1,
-        "pred_away": 1,
-        "points": 0
-      },
-      {
-        "id": 1397,
-        "user_id": 2,
-        "match_id": "679c9c8a5749c4077500e072",
-        "pred_home": 1,
-        "pred_away": 0,
-        "points": 0
-      },
-      {
-        "id": 1398,
-        "user_id": 2,
-        "match_id": "679c9c8a5749c4077500e069",
-        "pred_home": 1,
-        "pred_away": 2,
-        "points": 0
-      },
-      {
-        "id": 1399,
-        "user_id": 2,
-        "match_id": "679c9c8a5749c4077500e070",
-        "pred_home": 0,
-        "pred_away": 3,
-        "points": 0
-      },
-      {
-        "id": 1406,
-        "user_id": 6,
-        "match_id": "679c9c8a5749c4077500e067",
-        "pred_home": 0,
-        "pred_away": 2,
-        "points": 0
-      },
-      {
-        "id": 1407,
-        "user_id": 6,
-        "match_id": "679c9c8a5749c4077500e068",
-        "pred_home": 2,
-        "pred_away": 2,
-        "points": 0
-      },
-      {
-        "id": 1408,
-        "user_id": 6,
-        "match_id": "679c9c8a5749c4077500e071",
-        "pred_home": 0,
-        "pred_away": 2,
-        "points": 0
-      },
-      {
-        "id": 1409,
-        "user_id": 6,
-        "match_id": "679c9c8a5749c4077500e072",
-        "pred_home": 1,
-        "pred_away": 1,
-        "points": 0
-      },
-      {
-        "id": 1410,
-        "user_id": 6,
-        "match_id": "679c9c8a5749c4077500e069",
-        "pred_home": 0,
-        "pred_away": 2,
-        "points": 0
-      },
-      {
-        "id": 1411,
-        "user_id": 6,
-        "match_id": "679c9c8a5749c4077500e070",
-        "pred_home": 0,
-        "pred_away": 3,
-        "points": 0
-      },
-      {
-        "id": 1412,
-        "user_id": 6,
-        "match_id": "679c9c8a5749c4077500e073",
-        "pred_home": 1,
-        "pred_away": 1,
-        "points": 0
-      },
-      {
-        "id": 1413,
-        "user_id": 1,
-        "match_id": "679c9c8a5749c4077500e067",
-        "pred_home": 0,
-        "pred_away": 2,
-        "points": 0
-      },
-      {
-        "id": 1414,
-        "user_id": 1,
-        "match_id": "679c9c8a5749c4077500e068",
-        "pred_home": 2,
-        "pred_away": 1,
-        "points": 0
-      },
-      {
-        "id": 1415,
-        "user_id": 1,
-        "match_id": "679c9c8a5749c4077500e071",
-        "pred_home": 1,
-        "pred_away": 2,
-        "points": 0
-      },
-      {
-        "id": 1416,
-        "user_id": 1,
-        "match_id": "679c9c8a5749c4077500e072",
-        "pred_home": 2,
-        "pred_away": 1,
-        "points": 0
-      },
-      {
-        "id": 1417,
-        "user_id": 1,
-        "match_id": "679c9c8a5749c4077500e069",
-        "pred_home": 1,
-        "pred_away": 2,
-        "points": 0
-      },
-      {
-        "id": 1418,
-        "user_id": 1,
-        "match_id": "679c9c8a5749c4077500e070",
-        "pred_home": 0,
-        "pred_away": 3,
         "points": 0
       }
     ],

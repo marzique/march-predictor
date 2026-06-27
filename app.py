@@ -90,14 +90,30 @@ def _scorers(raw):
 
 
 def fetch_leaderboard(conn):
+    # Tiebreak: points -> outcome-correct % -> exact % -> alphabetical.
+    # Percentages use only FINISHED matches the user predicted.
     return conn.execute(
         """SELECT u.username,
-                  COALESCE(SUM(p.points), 0) AS total,
-                  COUNT(p.id)                AS played
+                  COALESCE(SUM(p.points), 0)                                AS total,
+                  COUNT(p.id)                                               AS played,
+                  SUM(CASE WHEN m.finished=1 THEN 1 ELSE 0 END)             AS fin,
+                  SUM(CASE WHEN m.finished=1 AND p.points>=2 THEN 1 ELSE 0 END) AS correct,
+                  SUM(CASE WHEN m.finished=1 AND p.points=6 THEN 1 ELSE 0 END)  AS exact
            FROM users u
            LEFT JOIN predictions p ON p.user_id = u.id
+           LEFT JOIN matches m     ON m.id = p.match_id
            GROUP BY u.id
-           ORDER BY total DESC, played DESC, u.username""").fetchall()
+           ORDER BY
+             COALESCE(SUM(p.points), 0) DESC,
+             CASE WHEN SUM(CASE WHEN m.finished=1 THEN 1 ELSE 0 END) > 0
+                  THEN 1.0 * SUM(CASE WHEN m.finished=1 AND p.points>=2 THEN 1 ELSE 0 END)
+                           / SUM(CASE WHEN m.finished=1 THEN 1 ELSE 0 END)
+                  ELSE 0 END DESC,
+             CASE WHEN SUM(CASE WHEN m.finished=1 THEN 1 ELSE 0 END) > 0
+                  THEN 1.0 * SUM(CASE WHEN m.finished=1 AND p.points=6 THEN 1 ELSE 0 END)
+                           / SUM(CASE WHEN m.finished=1 THEN 1 ELSE 0 END)
+                  ELSE 0 END DESC,
+             LOWER(u.username)""").fetchall()
 
 
 # ------------------------------------------------------------------- routes ----
@@ -344,7 +360,11 @@ async def progress(request: Request):
             d.setdefault("rank", []).append(rank)
             d.setdefault("gap", []).append(leader - d["points"][s])
 
-    order = sorted(users, key=lambda u: -udata[u["id"]]["total"])
+    def _tiebreak(u):
+        d = udata[u["id"]]
+        pl = d["played"] or 1
+        return (-d["total"], -(d["correct"] / pl), -(d["nexact"] / pl), d["name"].lower())
+    order = sorted(users, key=_tiebreak)   # points -> correct% -> exact% -> alphabetical
     ordered = [udata[u["id"]] for u in order]
 
     chart = {
