@@ -6,7 +6,7 @@ venv/
 *.egg-info/
 
 # Database — NEVER commit live data
-data.db
+#data.db
 data.db-wal
 data.db-shm
 data.db.bak-*
