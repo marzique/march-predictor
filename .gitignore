@@ -16,3 +16,5 @@ data.db.bak-*
 .env
 *.log
 .DS_Store
+
+.idea/
