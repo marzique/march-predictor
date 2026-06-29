@@ -37,35 +37,6 @@
   <h2>Points breakdown</h2>
   <div class="chart-wrap"><canvas id="chartBreakdown"></canvas></div>
 </div>
-
-<div class="card">
-  <h2>Per-user stats</h2>
-  <div class="stats-scroll">
-    <table class="stats">
-      <thead><tr>
-        <th>Player</th><th>Pts</th><th>Played</th><th>Avg</th>
-        <th>Outcome%</th><th>Exact%</th>
-        <th>🎯6</th><th>📏4</th><th>½3</th><th>✓2</th><th>✗0</th>
-        <th>Best</th><th>Worst</th><th>Streak</th>
-      </tr></thead>
-      <tbody>
-      {% for s in stats %}
-        <tr class="{{ 'me-row' if s['name'] == user['username'] else '' }}">
-          <td class="who">{{ s["name"] }}</td>
-          <td><b>{{ s["total"] }}</b></td>
-          <td>{{ s["played"] }}</td>
-          <td>{{ s["avg"] }}</td>
-          <td>{{ s["acc"] }}%</td>
-          <td>{{ s["exact_pct"] }}%</td>
-          <td>{{ s["t6"] }}</td><td>{{ s["t4"] }}</td><td>{{ s["t3"] }}</td>
-          <td>{{ s["t2"] }}</td><td>{{ s["t0"] }}</td>
-          <td>{{ s["best"] }}</td><td>{{ s["worst"] }}</td><td>{{ s["streak"] }}</td>
-        </tr>
-      {% endfor %}
-      </tbody>
-    </table>
-  </div>
-</div>
 {% endif %}
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>

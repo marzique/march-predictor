@@ -1,11 +1,11 @@
 {
-  "created_at": "2026-06-29T22:10:46",
+  "created_at": "2026-06-29T12:20:02",
   "label": "manual",
   "counts": {
     "users": 6,
     "teams": 48,
     "matches": 104,
-    "predictions": 491,
+    "predictions": 489,
     "comments": 0
   },
   "tables": {
@@ -1545,13 +1545,13 @@
         "home_id": "9",
         "away_id": "22",
         "kickoff": "2026-06-29T17:00:00+00:00",
-        "home_score": 2,
-        "away_score": 1,
-        "finished": 1,
+        "home_score": null,
+        "away_score": null,
+        "finished": 0,
         "grp": "R32",
         "matchday": "4",
-        "home_scorers": "[\"Casemiro 56'\", \"Gabriel Martinelli 90+5'\"]",
-        "away_scorers": "[\"Kaishū Sano 29'\"]",
+        "home_scorers": "[]",
+        "away_scorers": "[]",
         "manual": 0
       },
       {
@@ -1780,9 +1780,9 @@
       },
       {
         "id": "679c9c8a5749c4077500e085",
-        "home": "Brazil",
+        "home": "?",
         "away": "?",
-        "home_id": "9",
+        "home_id": "0",
         "away_id": "0",
         "kickoff": "2026-07-05T20:00:00+00:00",
         "home_score": null,
@@ -5498,7 +5498,7 @@
         "match_id": "679c9c8a5749c4077500e076",
         "pred_home": 2,
         "pred_away": 1,
-        "points": 6
+        "points": 0
       },
       {
         "id": 1421,
@@ -5544,7 +5544,7 @@
         "id": 1426,
         "user_id": 5,
         "match_id": "679c9c8a5749c4077500e07a",
-        "pred_home": 3,
+        "pred_home": 2,
         "pred_away": 1,
         "points": 0
       },
@@ -5570,7 +5570,7 @@
         "match_id": "679c9c8a5749c4077500e076",
         "pred_home": 1,
         "pred_away": 0,
-        "points": 4
+        "points": 0
       },
       {
         "id": 1430,
@@ -5809,14 +5809,14 @@
         "user_id": 6,
         "match_id": "679c9c8a5749c4077500e076",
         "pred_home": 2,
-        "pred_away": 1,
-        "points": 6
+        "pred_away": 0,
+        "points": 0
       },
       {
         "id": 1462,
         "user_id": 6,
         "match_id": "679c9c8a5749c4077500e074",
-        "pred_home": 2,
+        "pred_home": 4,
         "pred_away": 0,
         "points": 0
       },
@@ -5824,8 +5824,8 @@
         "id": 1463,
         "user_id": 6,
         "match_id": "679c9c8a5749c4077500e075",
-        "pred_home": 1,
-        "pred_away": 2,
+        "pred_home": 2,
+        "pred_away": 1,
         "points": 0
       },
       {
@@ -5834,7 +5834,7 @@
         "match_id": "679c9c8a5749c4077500e076",
         "pred_home": 2,
         "pred_away": 1,
-        "points": 6
+        "points": 0
       },
       {
         "id": 1470,
@@ -5898,7 +5898,7 @@
         "match_id": "679c9c8a5749c4077500e076",
         "pred_home": 2,
         "pred_away": 0,
-        "points": 3
+        "points": 0
       },
       {
         "id": 1478,
@@ -5913,22 +5913,6 @@
         "user_id": 1,
         "match_id": "679c9c8a5749c4077500e075",
         "pred_home": 3,
-        "pred_away": 1,
-        "points": 0
-      },
-      {
-        "id": 1490,
-        "user_id": 5,
-        "match_id": "679c9c8a5749c4077500e07b",
-        "pred_home": 2,
-        "pred_away": 1,
-        "points": 0
-      },
-      {
-        "id": 1491,
-        "user_id": 5,
-        "match_id": "679c9c8a5749c4077500e07e",
-        "pred_home": 2,
         "pred_away": 1,
         "points": 0
       }

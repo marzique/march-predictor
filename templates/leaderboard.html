@@ -1,18 +1,39 @@
 {% extends "base.html" %}
 {% block title %}Leaderboard{% endblock %}
+{% block main_class %}wide{% endblock %}
 {% block content %}
-<h1>Leaderboard</h1>
-<table class="board">
-  <thead><tr><th>#</th><th>Player</th><th>Points</th><th>Predicted</th></tr></thead>
-  <tbody>
-  {% for r in rows %}
-    <tr class="{{ 'me-row' if r['username'] == user['username'] else '' }}">
-      <td>{{ loop.index }}</td>
-      <td>{{ r["username"] }}</td>
-      <td><b>{{ r["total"] }}</b></td>
-      <td>{{ r["played"] }}</td>
-    </tr>
-  {% endfor %}
-  </tbody>
-</table>
+<h1>🏆 Leaderboard</h1>
+
+{% if not has_data %}
+  <p class="hint">No finished matches yet — standings fill in as results come in.</p>
+{% else %}
+<div class="card">
+  <div class="stats-scroll">
+    <table class="stats">
+      <thead><tr>
+        <th>#</th><th>Player</th><th>Pts</th><th>Played</th><th>Avg</th>
+        <th>Outcome%</th><th>Exact%</th>
+        <th>🎯6</th><th>📏4</th><th>½3</th><th>✓2</th><th>✗0</th>
+        <th>Streak</th>
+      </tr></thead>
+      <tbody>
+      {% for s in stats %}
+        <tr class="{{ 'me-row' if s['name'] == user['username'] else '' }}">
+          <td>{{ loop.index }}</td>
+          <td class="who">{{ s["name"] }}</td>
+          <td><b>{{ s["total"] }}</b></td>
+          <td>{{ s["played"] }}</td>
+          <td>{{ s["avg"] }}</td>
+          <td>{{ s["acc"] }}%</td>
+          <td>{{ s["exact_pct"] }}%</td>
+          <td>{{ s["t6"] }}</td><td>{{ s["t4"] }}</td><td>{{ s["t3"] }}</td>
+          <td>{{ s["t2"] }}</td><td>{{ s["t0"] }}</td>
+          <td>{{ s["streak"] }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endif %}
 {% endblock %}

@@ -273,29 +273,13 @@ async def add_comment(request: Request, match_id: str, body: str = Form(...)):
     return JSONResponse({"username": user["username"], "body": body, "created_at": created})
 
 
-@app.get("/leaderboard", response_class=HTMLResponse)
-async def leaderboard(request: Request):
-    user = current_user(request)
-    if not user:
-        return RedirectResponse("/login", status_code=302)
-    with connect() as conn:
-        rows = fetch_leaderboard(conn)
-    return render(request, "leaderboard.html", {"user": user, "rows": rows})
-
-
-@app.get("/progress", response_class=HTMLResponse)
-async def progress(request: Request):
-    """Line-chart metrics + per-user stats across finished matches. Read-only."""
-    user = current_user(request)
-    if not user:
-        return RedirectResponse("/login", status_code=302)
-    with connect() as conn:
-        matches = conn.execute(
-            "SELECT id, home, away FROM matches WHERE finished=1 ORDER BY kickoff, id"
-        ).fetchall()
-        users = conn.execute("SELECT id, username FROM users ORDER BY id").fetchall()
-        preds = conn.execute(
-            "SELECT user_id, match_id, points FROM predictions").fetchall()
+def build_metrics(conn):
+    """Per-user series (for charts) + per-user stats. Tiebreak-ordered. Read-only."""
+    matches = conn.execute(
+        "SELECT id, home, away FROM matches WHERE finished=1 ORDER BY kickoff, id"
+    ).fetchall()
+    users = conn.execute("SELECT id, username FROM users ORDER BY id").fetchall()
+    preds = conn.execute("SELECT user_id, match_id, points FROM predictions").fetchall()
 
     mids = [m["id"] for m in matches]
     n = len(mids)
@@ -389,8 +373,30 @@ async def progress(request: Request):
         "best": d["best"], "worst": d["worst"], "streak": d["streak"],
     } for d in ordered]
 
+    return chart, stats, n > 0
+
+
+@app.get("/leaderboard", response_class=HTMLResponse)
+async def leaderboard(request: Request):
+    user = current_user(request)
+    if not user:
+        return RedirectResponse("/login", status_code=302)
+    with connect() as conn:
+        _, stats, has_data = build_metrics(conn)
+    return render(request, "leaderboard.html",
+                  {"user": user, "stats": stats, "has_data": has_data})
+
+
+@app.get("/progress", response_class=HTMLResponse)
+async def progress(request: Request):
+    """Line-chart metrics across finished matches. Read-only."""
+    user = current_user(request)
+    if not user:
+        return RedirectResponse("/login", status_code=302)
+    with connect() as conn:
+        chart, _, has_data = build_metrics(conn)
     return render(request, "progress.html",
-                  {"user": user, "chart": chart, "stats": stats, "has_data": n > 0})
+                  {"user": user, "chart": chart, "has_data": has_data})
 
 
 @app.get("/insights", response_class=HTMLResponse)
